@@ -1,6 +1,6 @@
 ---
 title: "Homework 1"
-author: "SLH"
+author: "Shannon Hamilton"
 date: "2/4/2018"
 output: html_document
 ---
