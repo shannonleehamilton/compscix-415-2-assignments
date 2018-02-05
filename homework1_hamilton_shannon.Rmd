@@ -12,14 +12,16 @@ knitr::opts_chunk$set(echo = TRUE)
 My Github repository for my assignments can be found at this URL: https://github.com/shannonleehamilton/compscix-415-2-assignments
 
 library(mdsr)
+
 library(tidyverse)
 
 data("WorldCities")
 
 QUESTION 1: How many observations and variables are there in this data set? What are some of the variable names? 
 
-There are 10 variables in the data set, incuding latitude, longitude, country and population. Therea are 23,018 observations.unique(country_col)
+There are 10 variables in the data set, incuding latitude, longitude, country and population. Therea are 23,018 observations.
 
+unique(country_col)
 glimpse(WorldCities)
 summary(WorldCities)
 WorldCities <- head(WorldCities, 200)
