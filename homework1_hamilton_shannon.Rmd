@@ -9,4 +9,58 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-test
+My Github repository for my assignments can be found at this URL: https://github.com/shannonleehamilton/compscix-415-2-assignments
+
+library(mdsr)
+library(tidyverse)
+
+data("WorldCities")
+
+QUESTION 1: How many observations and variables are there in this data set? What are some of the variable names? 
+
+There are 10 variables in the data set, incuding latitude, longitude, country and population. Therea are 23,018 observations.unique(country_col)
+
+glimpse(WorldCities)
+summary(WorldCities)
+WorldCities <- head(WorldCities, 200)
+country_col <- WorldCities$country
+unique(country_col)
+
+QUESTION 2: There is a column called region in the data set. Can you extract this and show only the unique values?
+
+ [1] "Europe/Andorra"                 "Asia/Dubai"                    
+ [3] "Asia/Kabul"                     "America/Antigua"               
+ [5] "America/Anguilla"               "Europe/Tirane"                 
+ [7] "Asia/Yerevan"                   "Africa/Luanda"                 
+ [9] "America/Argentina/Buenos_Aires" "America/Argentina/Cordoba"     
+[11] "America/Argentina/Salta"        "America/Argentina/Tucuman"     
+[13] "America/Argentina/San_Juan"    
+
+
+region_col <- WorldCities$region
+unique(region_col)
+
+QUESTION 3: Can you extract and show the unique entries from the country column in
+WorldCities using one line of code and two %>% operators?
+
+WorldCities %>% select(country) %>% unique()
+
+    country
+1        AD
+3        AE
+15       AF
+65       AG
+66       AI
+67       AL
+87       AM
+104      AO
+131      AR
+
+
+QUESTION 4: Make one more histogram of the population and add a new x-label, a new ylabel, a new title (use ggtitle('my title')), and change the theme of the plot using theme_bw().
+
+PopPlot <- WorldCities %>% ggplot(aes(x = population)) +
+geom_histogram()
+
+print(PopPlot + labs (title="Country Count by Population", y="country count", x="Population") + theme_bw())
+
