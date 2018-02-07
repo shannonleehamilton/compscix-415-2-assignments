@@ -2,7 +2,8 @@
 title: "COMPSCIX 415.2 Homework 2"
 author: "Shannon Hamilton"
 date: "2/6/2018"
-output: html_document:
+output: 
+  html_document:
   self_contained: true
 ---
 
@@ -10,29 +11,41 @@ output: html_document:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<b> 3.2.4 Exercises </b>
-
-Run ggplot(data = mpg). What do you see?
-A blank plot. 
-
-How many rows are in mpg? How many columns?
-There are 234 rows of data (i.e. observations) and 11 columns (i.e. variables).
-
-What does the drv variable describe? Read the help for? mpg to find out.
-drv describes the driving type of the car, which takes on three potential values: front-wheel drive, reel-wheel drive and four-wheel drive. 
-
-Make a scatterplot of hwy vs cyl.
-
-What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
-
 ```{r load_packages, warning=FALSE, message=FALSE}
 library(mdsr)
 library(tidyverse)
+```
+
+<b> 3.2.4 Exercises </b>
+
+
+<i>Run ggplot(data = mpg). What do you see?</i> <p></p>
+A blank plot.<p></p>
+
+<i>How many rows are in mpg? How many columns?</i><p></p>
+There are 234 rows of data (i.e. observations) and 11 columns (i.e. variables).<p></p>
+```
+<i>What does the drv variable describe? Read the help for? mpg to find out.</i><p></p>
+
+drv describes the driving type of the car, which takes on three potential values: front-wheel drive, reel-wheel drive and four-wheel drive. <p></p>
+
+<i>Make a scatterplot of hwy vs cyl.</i><p></p>
+See code.
+<p></p>
+
+<i>What happens if you make a scatterplot of class vs drv? Why is the plot not useful?</i><p></p>
+The scatterplot for these variables isn't valuable because both of these variables are categorical where the categories are nominal. "r" being higher than "f" and "4" doesn't hae any meaning. Similarly, "2seater" isn't "lower" or "less than" than "minivan".<p></p>
+
+```{r}
 data("mgp")
 
 ggplot(data = mpg)
 glimpse(mpg)
 
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = hwy, y = cyl))
 
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = class, y = drv))
 ```
 
