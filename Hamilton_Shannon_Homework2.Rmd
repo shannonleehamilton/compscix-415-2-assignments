@@ -76,3 +76,19 @@ ANSWER <p></p>
 <i>6. What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?</i><p></p>
 
 ANSWER <p></p>
+
+<h2> 3.5.1 Exercises </h2>
+
+<i>4. What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?</i><p></p>
+
+ANSWER <p></p>
+
+<i>5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol argument?</i><p></p>
+
+ANSWER <p></p>
+
+<h2> 3.6.1 Exercises </h2>
+
+<i>QUESTION?</i><p></p>
+
+ANSWER <p></p>
