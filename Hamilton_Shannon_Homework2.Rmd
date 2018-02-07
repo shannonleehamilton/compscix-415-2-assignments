@@ -1,0 +1,38 @@
+---
+title: "COMPSCIX 415.2 Homework 2"
+author: "Shannon Hamilton"
+date: "2/6/2018"
+output: html_document:
+  self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<b> 3.2.4 Exercises </b>
+
+Run ggplot(data = mpg). What do you see?
+A blank plot. 
+
+How many rows are in mpg? How many columns?
+There are 234 rows of data (i.e. observations) and 11 columns (i.e. variables).
+
+What does the drv variable describe? Read the help for? mpg to find out.
+drv describes the driving type of the car, which takes on three potential values: front-wheel drive, reel-wheel drive and four-wheel drive. 
+
+Make a scatterplot of hwy vs cyl.
+
+What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
+
+```{r load_packages, warning=FALSE, message=FALSE}
+library(mdsr)
+library(tidyverse)
+data("mgp")
+
+ggplot(data = mpg)
+glimpse(mpg)
+
+
+```
+
