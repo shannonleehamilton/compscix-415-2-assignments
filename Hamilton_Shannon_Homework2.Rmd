@@ -16,28 +16,28 @@ library(mdsr)
 library(tidyverse)
 ```
 
-<b> 3.2.4 Exercises </b>
+<h2> 3.2.4 Exercises </h2>
 
 
-<i>Run ggplot(data = mpg). What do you see?</i> <p></p>
+<i>1. Run ggplot(data = mpg). What do you see?</i> <p></p>
 A blank plot.<p></p>
 
-<i>How many rows are in mpg? How many columns?</i><p></p>
+<i>2. How many rows are in mpg? How many columns?</i><p></p>
 There are 234 rows of data (i.e. observations) and 11 columns (i.e. variables).<p></p>
-```
-<i>What does the drv variable describe? Read the help for? mpg to find out.</i><p></p>
+
+<i>3. What does the drv variable describe? Read the help for? mpg to find out.</i><p></p>
 
 drv describes the driving type of the car, which takes on three potential values: front-wheel drive, reel-wheel drive and four-wheel drive. <p></p>
 
-<i>Make a scatterplot of hwy vs cyl.</i><p></p>
+<i>4. Make a scatterplot of hwy vs cyl.</i><p></p>
 See code.
 <p></p>
 
-<i>What happens if you make a scatterplot of class vs drv? Why is the plot not useful?</i><p></p>
+<i>5. What happens if you make a scatterplot of class vs drv? Why is the plot not useful?</i><p></p>
 The scatterplot for these variables isn't valuable because both of these variables are categorical where the categories are nominal. "r" being higher than "f" and "4" doesn't hae any meaning. Similarly, "2seater" isn't "lower" or "less than" than "minivan".<p></p>
 
 ```{r}
-data("mgp")
+data("mpg")
 
 ggplot(data = mpg)
 glimpse(mpg)
@@ -49,3 +49,30 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = class, y = drv))
 ```
 
+<h2> 3.3.1 Exercises </h2>
+
+<i>1. What’s gone wrong with this code? Why are the points not blue?</i><p></p>
+
+The points are not blue because the "color = blue" is within the aesthetic argument brackets. To make the points blue, the aes brackets must be closed and the "color" argument must be within the geom_point brackets, but after the aes brackets.  <p></p>
+
+<i>2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?</i><p></p>
+
+The categorical variables are: model name, transmission type, driving type, type of car.
+The continuous variables are: displacement, year, number of cylinders, city mpg, highway mpg.
+<p></p>
+
+<i>3. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?</i><p></p>
+
+ANSWER <p></p>
+
+<i>4. What happens if you map the same variable to multiple aesthetics?</i><p></p>
+
+ANSWER <p></p>
+
+<i>5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point) </i><p></p>
+
+ANSWER <p></p>
+
+<i>6. What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?</i><p></p>
+
+ANSWER <p></p>
