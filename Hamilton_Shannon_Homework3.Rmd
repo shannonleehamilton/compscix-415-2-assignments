@@ -11,3 +11,49 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r load_packages, warning=FALSE, message=FALSE}
+library(mdsr)
+library(tidyverse)
+```
+<h2> 3.8.1 Exercises </h2>
+
+
+<i>1.What is the problem with this plot? How could you improve it?</i> <p></p>
+There are overlapping values (overplotting), which makes it difficult to see where there are larger groupings of data points. Jittering can improve this plot.<p></p>
+
+
+```{r}
+data("mpg")
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy), position = "jitter")
+
+```
+
+<i>2. What parameters to geom_jitter() control the amount of jittering?</i> <p></p>
+Width controls the amount of hotizontal jitter, height controls veritcal jitter.<p></p>
+
+<i>3.Compare and contrast geom_jitter() with geom_count()</i> <p></p>
+geom_jitter add slight random variation to points so that they don't overlap, while geom_count makes the size of points that overlap bigger depending on the count of the number of points that overlap. <p></p>
+
+<i>4. What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.</i> <p></p>
+The default position is dodge, which places overlapping objects directly beside one another. <p></p><p></p>
+
+```{r}
+data("mpg")
+
+ggplot(data = mpg) + 
+  geom_boxplot(mapping = aes(class, hwy, color = drv))
+
+```
+
+<h2> 3.9.1 Exercises </h2>
+
+<i>1.Question</i> <p></p>
+Answer.<p></p>
+
+<i>1.Question</i> <p></p>
+Answer.<p></p>
+
+<i>1.Question</i> <p></p>
+Answer.<p></p>
