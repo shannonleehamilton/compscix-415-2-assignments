@@ -49,6 +49,58 @@ ggplot(data = mpg) +
 
 <h2> 3.9.1 Exercises </h2>
 
+<i>2.What does labs() do? Read the documentation.</i> <p></p>
+
+labs() allows you to modify the labels of your plot - the chart title or x/y axis titles. <p></p>
+
+<i>4. What does the plot below tell you about the relationship between city and highway mpg? Why is coord_fixed() important? What does geom_abline() do?</i> <p></p>
+
+coord_fixed creates a specified ratio between the physical representation of data units on the axes. This helps to decrease the likelihood of misunderstanding from streatched out axies. geom_abline() adds a reference line to the data. <p></p>
+
+```{r}
+data("mpg")
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() +
+  coord_fixed()
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_abline() +
+  coord_fixed()
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() 
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  coord_fixed()
+
+```
+
+<h2> 4.4 Exercises </h2>
+
+<i>1. Why does this code not work?</i> <p></p>
+It doesn't return an answer because the user misspelled the object name (it isn't an "i" in "variable") from what they defined when they tried to return it. <p></p>
+
+<i>2.Tweak each of the following R commands so that they run correctly:</i> <p></p>
+Answer.<p></p>
+
+```{r}
+library(tidyverse)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+filter(mpg, cyl == "8")
+
+filter(diamonds, carat > 3)
+
+
+```
+
+
+<h2> 5.2.4 Exercises </h2> <p></p>
 <i>1.Question</i> <p></p>
 Answer.<p></p>
 
