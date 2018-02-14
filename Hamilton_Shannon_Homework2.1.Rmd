@@ -112,31 +112,78 @@ ggplot(data = mpg) +
 
 <i>4. What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?</i><p></p>
 
-ANSWER <p></p>
+```{r}
+data("mpg")
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+
+```
+
+It is easier to see the trends by car type with the facets over color-coded car type. However, it is harder to see overall trends and compare across car types. As the data set gets bigger, the facet becomes easier to read than color. <p></p>
 
 <i>5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol argument?</i><p></p>
 
-ANSWER <p></p>
+The nrow function determines the number of rows in the facet. The ncol determines the number of columnms in the facet.The facet_grid automatically creates the columns and rows based on the number of unique values per variable. <p></p>
 
 <h2> 3.6.1 Exercises </h2>
 
-<i>QUESTION?</i><p></p>
+<i>1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?</i><p></p>
 
-ANSWER <p></p>
+Bar charts use bar geoms, line charts use line geoms, boxplots use boxplot geoms and area chats use area geoms. <p></p>
 
-<h2> 3.6.1 Exercises </h2>
+<i>2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.</i><p></p>
 
-<i>4. question?</i><p></p>
+I expect a series of scatterplots (one per car class) in two rows with displacement and mpg as the axes. <p></p>
 
-ANSWER <p></p>
+```{r}
+data("mpg")
 
-<i>5. question?</i><p></p>
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
 
-ANSWER <p></p>
+```
+
+<i>3. What does show.legend = FALSE do? What happens if you remove it?
+Why do you think I used it earlier in the chapter?</i><p></p>
+
+It removes the legend from a chart.It was used previously so that there wasn't a legend only on a single plot in a series.  <p></p>
+
+<i>4. What does the se argument to geom_smooth() do?</i><p></p>
+
+se adds/removes error bands. <p></p>
+
+<i>5. Will these two graphs look different? Why/why not?</i><p></p>
+
+They will look the same as they are both based on the same information. This information can be defined at the global level so that it doesn't need to be repeated in the code. <p></p>
 
 <h2> 3.7.1 Exercises </h2>
 
-<i>2. question?</i><p></p>
+<i>2. What does geom_col() do? How is it different to geom_bar()?</i><p></p>
 
-ANSWER <p></p>
+geom_bar uses a count as its default stat. geom_col uses stat_identity: it leaves the data as is, so creates the height based on a variable from the data set. <p></p>
 
+<h2>Other Questions </h2>
+
+<i>1. Look at the data graphics at the following link: What is a Data Scientist. Please briefly critique the designer’s choices. What works? What doesn’t work? What would you have done differently? </i><p></p>
+
+What Works: <p></p>
+- Series of bar charts to represent the different education levels <p></p>
+- Insight per chart called out <p></p>
+<p></p>
+
+<p></p>What Doesn't Work: <p></p>
+- Colors are too similar making it harder to read / see differences <p></p>
+- The "best source of new data science talent" chart is confusing in that the bars are different widths, but that doesn't seem to relresent anything <p></p>
+- Confusing that most of the charts have to do with data scientists vs. BI, but in one of the later charts, the comparison is "normal data science" vs. "big data science"
+- Inconsistency of grey = data science, blue = BI 
+<p></p>
+
+<p></p>What I would have done differently: <p></p>
+- No pie charts! <p></p>
+- More distinct colors <p></p>
+- Consistency of colors to represent data scientist vs  BI <p></p>
+
+<p></p>

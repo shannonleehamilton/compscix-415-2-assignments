@@ -1,0 +1,13 @@
+---
+title: "COMPSCIX 415.2 Homework 3"
+author: "Shannon Hamilton"
+date: "2/13/2018"
+output: 
+  html_document:
+  self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
