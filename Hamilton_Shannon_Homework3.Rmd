@@ -86,7 +86,7 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 It doesn't return an answer because the user misspelled the object name (it isn't an "i" in "variable") from what they defined when they tried to return it. <p></p>
 
 <i>2.Tweak each of the following R commands so that they run correctly:</i> <p></p>
-Answer.<p></p>
+See below. <p></p>
 
 ```{r}
 library(tidyverse)
@@ -102,18 +102,72 @@ filter(diamonds, carat > 3)
 
 
 <h2> 5.2.4 Exercises </h2> <p></p>
+<i>1.Find flights that: </i> <p></p>
+Had an arrival delay of two or more hours <p></p>
+
+
+```{r}
+
+data("flights")
+(twohour_flights <- filter(flights, arr_delay >= 120))
+
+```
+
+<p></p Flew to Houston (IAH or HOU)<p></p>
+
+```{r}
+
+data("flights")
+(houston_flights <- filter(flights, dest %in% c("HOU", "IAH")))
+
+```
+
+<p></p Were operated by United, American, or Delta <p></p>
+
+```{r}
+
+data("flights")
+(UAD_flights <- filter(flights, carrier %in% c("UA", "DL", "AA")))
+
+```
+
+<p></p Departed in summer (July, August, and September)<p></p>
+```{r}
+
+data("flights")
+(UAD_flights <- filter(flights, month %in% c(7, 8, 9)))
+
+```
+<p></p Arrived more than two hours late, but didn’t leave late. <p></p>
+
+```{r}
+
+data("flights")
+(UAD_flights <- filter(flights, arr_delay >= 120, dep_delay <=0))
+
+```
+
+<p></p Were delayed by at least an hour, but made up over 30 minutes in flight. (IAH or HOU)<p></p>
+
+```{r}
+
+data("flights")
+(UAD_flights <- filter(flights, dep_delay >=60, (dep_delay - arr_delay) >= 30))
+
+```
+
+<p></p Departed between midnight and 6am (inclusive). <p></p
+
+
 <i>1.Question</i> <p></p>
 Answer.<p></p>
 
 ```{r}
-data("nycflights13")
 
-View(flights)
+data("flights")
+twohour_flights <- filter(flights, arr_delay >= 120)
 
 ```
-
-<i>1.Question</i> <p></p>
-Answer.<p></p>
 
 <i>1.Question</i> <p></p>
 Answer.<p></p>
