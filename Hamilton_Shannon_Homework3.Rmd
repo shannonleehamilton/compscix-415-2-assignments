@@ -143,31 +143,106 @@ data("flights")
 ```{r}
 
 data("flights")
-(UAD_flights <- filter(flights, arr_delay >= 120, dep_delay <=0))
+(arrive_late_flights <- filter(flights, arr_delay >= 120, dep_delay <=0))
 
 ```
 
-<p></p Were delayed by at least an hour, but made up over 30 minutes in flight. (IAH or HOU)<p></p>
+<p></p Were delayed by at least an hour, but made up over 30 minutes in flight.<p></p>
 
 ```{r}
 
 data("flights")
-(UAD_flights <- filter(flights, dep_delay >=60, (dep_delay - arr_delay) >= 30))
+(madeup_flights <- filter(flights, dep_delay >=60, (dep_delay - arr_delay) >= 30))
 
 ```
 
 <p></p Departed between midnight and 6am (inclusive). <p></p
 
+```{r}
 
-<i>1.Question</i> <p></p>
-Answer.<p></p>
+data("flights")
+(night_flights <- filter(flights, dep_time <=0600 | dep_time == 2400))
+
+```
+
+<i>Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?</i> <p></p>
+Between is a shortcut for x >= left & x <= right. It would help simpify when you want to pull out "inclusive" ranges, so that you don't need to include a second argument. Example below of between 5 and 600. <p></p>
 
 ```{r}
 
 data("flights")
-twohour_flights <- filter(flights, arr_delay >= 120)
+(night_flights <- filter(flights, between(dep_time, 5, 0600)))
+
+```
+<i>3. How many flights have a missing dep_time? What other variables are missing? What might these rows represent?</i> <p></p>
+There are 8255 missing departure times. Delays and arrival time are also missing. These may be cancelled flights. <p></p>
+
+```{r}
+
+data("flights")
+(missing_flights <- filter(flights, is.na(dep_time)))
 
 ```
 
-<i>1.Question</i> <p></p>
-Answer.<p></p>
+<i>4. Why is NA ^ 0 not missing? Why is NA | TRUE not missing? Why is FALSE & NA not missing? Can you figure out the general rule? (NA * 0 is a tricky counterexample!)</i> <p></p>
+Any number to the power of 0 is 1, so NA^0 is not missing. NA | TRUE looks for true values or NA values, so it returns true.Since NA (some value) and false will always be false,this statement returns FALSE. If the value of the missing element is critical to the caluclation, then it will show NA. If it is irrelevant to the calculation, tghen something will be shown as a result. <p></p>
+
+<h2> 5.4.1 Exercises </h2> <p></p>
+<i>1. Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights. </i> <p></p>
+See below. <p></p>
+
+```{r}
+
+data("flights")
+
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+
+select(flights, dep_time:arr_delay, -(sched_dep_time), -(sched_arr_time))
+
+select(flights, starts_with("dep_"), starts_with("arr_"))
+
+```
+
+<i>2. What happens if you include the name of a variable multiple times in a select() call? </i> <p></p>
+It ignores the repeaded/duplicate variable and only includes it once. <p></p>
+
+```{r}
+
+data("flights")
+
+select(flights, dep_time, dep_delay, dep_time)
+
+
+
+```
+
+<i>3. What does the one_of() function do? Why might it be helpful in conjunction with this vector? </i> <p></p>
+one_of lets you use variables in character vector instead of listing them quoted in the function itself. It could be helpful along with the below by just refernecing this vector in your select function. <p></p>
+
+```{r}
+
+data("flights")
+
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+
+
+select(flights, one_of(vars))
+
+
+```
+
+<i>4. Does the result of running the following code surprise you? How do the select helpers deal with case by default? How can you change that default? </i> <p></p>
+The result is surprising because most areas of R are case-sensitive, but the contains helper ignores case. The select helpers ignore case by default (ignore.case: If TRUE, the default, ignores case when matching names), but you can change that argument.<p></p>
+
+```{r}
+
+data("flights")
+
+select(flights, contains("TIME"))
+
+```
+
+
+
+
+
