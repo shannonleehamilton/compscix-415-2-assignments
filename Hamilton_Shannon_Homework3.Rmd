@@ -113,7 +113,7 @@ data("flights")
 
 ```
 
-<p></p Flew to Houston (IAH or HOU)<p></p>
+<p></p> Flew to Houston (IAH or HOU)<p></p>
 
 ```{r}
 
@@ -122,7 +122,7 @@ data("flights")
 
 ```
 
-<p></p Were operated by United, American, or Delta <p></p>
+<p></p> Were operated by United, American, or Delta <p></p>
 
 ```{r}
 
@@ -131,14 +131,15 @@ data("flights")
 
 ```
 
-<p></p Departed in summer (July, August, and September)<p></p>
+<p></p> Departed in summer (July, August, and September)<p></p>
+
 ```{r}
 
 data("flights")
-(UAD_flights <- filter(flights, month %in% c(7, 8, 9)))
+(summer_flights <- filter(flights, month %in% c(7, 8, 9)))
 
 ```
-<p></p Arrived more than two hours late, but didn’t leave late. <p></p>
+<p></p> Arrived more than two hours late, but didn’t leave late. <p></p>
 
 ```{r}
 
@@ -147,7 +148,7 @@ data("flights")
 
 ```
 
-<p></p Were delayed by at least an hour, but made up over 30 minutes in flight.<p></p>
+<p></p> Were delayed by at least an hour, but made up over 30 minutes in flight.<p></p>
 
 ```{r}
 
@@ -156,7 +157,7 @@ data("flights")
 
 ```
 
-<p></p Departed between midnight and 6am (inclusive). <p></p
+<p></p> Departed between midnight and 6am (inclusive). <p></p>
 
 ```{r}
 
@@ -165,7 +166,7 @@ data("flights")
 
 ```
 
-<i>Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?</i> <p></p>
+ <p></p><i>2. Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?</i> <p></p>
 Between is a shortcut for x >= left & x <= right. It would help simpify when you want to pull out "inclusive" ranges, so that you don't need to include a second argument. Example below of between 5 and 600. <p></p>
 
 ```{r}
