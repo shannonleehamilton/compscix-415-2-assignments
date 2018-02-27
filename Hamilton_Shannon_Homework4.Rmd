@@ -19,15 +19,105 @@ library(nycflights13)
 <h2> 5.6.7 Exercises </h2>
 
 
-<i>1.....<p></p>
-
-Answer.<p></p>
+<i>2.Come up with another approach that will give you the same output as not_cancelled %>% count(dest) and not_cancelled %>% count(tailnum, wt = distance) (without using count()).<p></p>
 
 ```{r}
-data("mpg")
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
 
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = cty, y = hwy), position = "jitter")
+not_cancelled %>% count(dest)
+
+#alternative
+not_cancelled %>% 
+   group_by(dest) %>% 
+  summarise(n = n())
+
+not_cancelled %>% count(tailnum, wt = distance)
+
+#alternative
+not_cancelled %>% 
+   group_by(tailnum) %>% 
+  summarise(n = sum(distance))
 
 ```
 
+
+
+<i>4. For each destination, compute the total minutes of delay. For each flight, compute the proportion of the total delay for its destination.<p></p>
+
+```{r}
+flights %>% 
+  group_by(dest) %>% 
+  summarise(delay = sum(dep_delay, na.rm = TRUE))
+
+flights %>% 
+  group_by(tailnum, dest) %>% 
+  summarise(proportion = mean(dep_delay[!is.na(dep_delay)] > 0))
+
+```
+
+
+
+<i>5. Delays are typically temporally correlated: even once the problem that caused the initial delay has been resolved, later flights are delayed to allow earlier flights to leave. Using lag() explore how the delay of a flight is related to the delay of the immediately preceding flight.<p></p>
+summarize(correlation = cor(dep_delay, lagdelay, use = "complete.obs"))
+
+
+
+```{r}
+
+flights %>%
+  select(year, month, day, hour, dest, dep_delay) %>%
+  group_by(dest) %>%
+  mutate(lagdelay = lag(dep_delay)) %>%
+  filter(!is.na(lagdelay)) %>%
+  arrange(dest) %>%
+  summarize(lag_correlation = cor(dep_delay, lagdelay, use = "complete.obs"))
+
+```
+There does appear to be a positive correlation - at least in some locations (e.g. IAH, MDW, MCO) - between the lagged previous flight and the current flighr delay. <p></p>
+
+
+<i>6.Look at each destination. Can you find flights that are suspiciously fast? (i.e. flights that represent a potential data entry error). Compute the air time a flight relative to the shortest flight to that destination. Which flights were most delayed in the air?<p></p>
+
+
+```{r}
+data(flights)
+flights %>%
+ group_by(dest) %>%
+mutate(fast_time = air_time - min(air_time, na.rm=TRUE)) %>%
+arrange(fast_time) 
+
+```
+
+Answer.<p></p>
+
+<i>2.question.<p></p>
+
+Answer.<p></p>
+
+
+<i>2.question.<p></p>
+
+Answer.<p></p>
+
+
+<i>2.question.<p></p>
+
+Answer.<p></p>
+
+
+<i>2.question.<p></p>
+
+Answer.<p></p>
+
+
+<h2> Baby Names Exercises </h2>
+```{r}
+file_path <- '/Users/shamilto/Downloads/baby_names.txt'
+baby <-read_delim(file_path,delim="|")
+glimpse(baby)
+```
+
+```{r}
+saveRDS(flights, file = "/Users/shamilto/Downloads/baby_names.rds")
+```
