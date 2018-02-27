@@ -62,7 +62,6 @@ flights %>%
 summarize(correlation = cor(dep_delay, lagdelay, use = "complete.obs"))
 
 
-
 ```{r}
 
 flights %>%
@@ -81,17 +80,24 @@ There does appear to be a positive correlation - at least in some locations (e.g
 
 
 ```{r}
-data(flights)
 flights %>%
- group_by(dest) %>%
-mutate(fast_time = air_time - min(air_time, na.rm=TRUE)) %>%
-arrange(fast_time) 
+  group_by(dest) %>%
+  mutate(fast = air_time - min(air_time, na.rm = TRUE)) %>%
+  arrange(-fast) %>%
+  select(tailnum, air_time, fast)
+
+flights %>%
+  group_by(dest) %>%
+  mutate(error = air_time - 1.2*(mean(air_time, na.rm = TRUE))) %>%
+  arrange(air_time) %>%
+  select(tailnum,error) 
 
 ```
 
-Answer.<p></p>
+Tail numbers N703TW, N178DN and N5DBAA had the longest delay in the air. <p></p>
 
-<i>2.question.<p></p>
+<h2> 10.5 Exercises </h2>
+<i>1.question.<p></p>
 
 Answer.<p></p>
 
