@@ -16,7 +16,7 @@ library(mdsr)
 library(tidyverse)
 library(nycflights13)
 ```
-<h2> 5.6.7 Exercises </h2>
+<h2> 5.6.7 Exercises - return to #6 </h2>
 
 
 <i>2.Come up with another approach that will give you the same output as not_cancelled %>% count(dest) and not_cancelled %>% count(tailnum, wt = distance) (without using count()).<p></p>
@@ -96,23 +96,92 @@ flights %>%
 
 Tail numbers N703TW, N178DN and N5DBAA had the longest delay in the air. <p></p>
 
-<h2> 10.5 Exercises </h2>
-<i>1.question.<p></p>
+<h2> 10.5 Exercises - return to # 2 </h2>
+<i>1.How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).<p></p>
+
+Tibbles only print out the first few rows of data instead of all of the data like in a data frame. Tibbles also indicate the type of date at the top of the columns. <p></p>
+
+
+<i>2.Compare and contrast the following operations on a data.frame and equivalent tibble. What is different? Why might the default data frame behaviours cause you frustration?<p></p>
 
 Answer.<p></p>
 
 
-<i>2.question.<p></p>
+```{r}
+df <- data.frame(abc = 1, xyz = "a")
+df$x
+df[, "xyz"]
+df[, c("abc", "xyz")]
+
+df_tibble <- as_tibble(df)
+df_tibble$x
+df_tibble[, "xyz"]
+df_tibble[, c("abc", "xyz")]
+```
+
+
+<i>3.If you have the name of a variable stored in an object, e.g. var <- "mpg", how can you extract the reference variable from a tibble? <p></p>
+
+You can utilize square brackets to extract the name of a variable stored in an object of a tibble. <p></p>
+
+<i>6.What option controls how many additional column names are printed at the footer of a tibble?<p></p>
+
+From Help, n_extra decides the extra columns for which to print abbreviated information . <p></p>
+
+<h2> 12.3.3 Exercises - return to # 2 </h2>
+
+<i>2. Why does this code fail?<p></p>
+
+```{r}
+table4a %>% 
+  gather("1999", "2000", key = "year", value = "cases")
+```
+
+The Column names needed to be in quotes. <p></p>
+
+<i>3.Why does spreading this tibble fail? How could you add a new column to fix the problem?<p></p>
+
+```{r}
+
+people <- tribble(
+  ~name,             ~key,    ~value, ~year,
+  #-----------------|--------|------|------
+  "Phillip Woods",   "age",       45, 1990,
+  "Phillip Woods",   "height",   186, 1990,
+  "Phillip Woods",   "age",       50, 2000,
+  "Jessica Cordero", "age",       37, 1990,
+  "Jessica Cordero", "height",   156, 1990
+)
+
+spread(people,key,value)
+
+```
+
+Phillip has two rows with two different ages, which is causing the error. Perhaps this data is missing a year that would make it all unique. <p></p>
+
+<i>4.Tidy the simple tibble below. Do you need to spread or gather it? What are the variables?<p></p>
+
+```{r}
+
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes",     NA,    10,
+  "no",      20,    12
+)
+
+gather(preg,sex, count, male, female) 
+  
+```
+
+The variables are gender, pregnant and count. We need to gather. <p></p>
+
+<h2> Section 12.4.3 Exercises </h2>
+
+<i>1.What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets.<p></p>
 
 Answer.<p></p>
 
-
-<i>2.question.<p></p>
-
-Answer.<p></p>
-
-
-<i>2.question.<p></p>
+<i>2.Both unite() and separate() have a remove argument. What does it do? Why would you set it to FALSE?<p></p>
 
 Answer.<p></p>
 
