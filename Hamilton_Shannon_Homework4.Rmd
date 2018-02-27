@@ -179,11 +179,33 @@ The variables are gender, pregnant and count. We need to gather. <p></p>
 
 <i>1.What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets.<p></p>
 
-Answer.<p></p>
+If sep is a character vector, "extra" controls what happens when there are too many pieces. There are three valid options: warn, drop or merge. If sep is a character vector, fill" controls what happens when there are not enough pieces. There are three valid options: warn, right and left. <p></p>
+
+```{r}
+
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>% 
+  separate(x, c("one", "two", "three"), extra = "warn")
+
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>% 
+  separate(x, c("one", "two", "three"), extra="merge")
+
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>% 
+  separate(x, c("one", "two", "three"), extra="drop")
+
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>% 
+  separate(x, c("one", "two", "three"), fill = "left")
+
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>% 
+  separate(x, c("one", "two", "three"), fill = "right")
+
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>% 
+  separate(x, c("one", "two", "three"), fill="warn")
+  
+```
 
 <i>2.Both unite() and separate() have a remove argument. What does it do? Why would you set it to FALSE?<p></p>
 
-Answer.<p></p>
+"remove" if it is true removes input columsn from the output data frame.You may use it if you want to create a new variable based on an old variable and also keep the old variable.  <p></p>
 
 
 <h2> Baby Names Exercises </h2>
@@ -195,4 +217,10 @@ glimpse(baby)
 
 ```{r}
 saveRDS(flights, file = "/Users/shamilto/Downloads/baby_names.rds")
+```
+
+```{r}
+file_path2 <- '/Users/shamilto/Downloads/baby_names.rds'
+baby2 <-read_rds(file_path2)
+glimpse(baby2)
 ```
