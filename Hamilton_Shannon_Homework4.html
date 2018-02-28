@@ -129,9 +129,9 @@ $(document).ready(function () {
 library(tidyverse)
 library(nycflights13)</code></pre>
 <h2>
-5.6.7 Exercises - return to #6
+5.6.7 Exercises
 </h2>
-<i>2.Come up with another approach that will give you the same output as not_cancelled %&gt;% count(dest) and not_cancelled %&gt;% count(tailnum, wt = distance) (without using count()).
+<i>2.Come up with another approach that will give you the same output as not_cancelled %&gt;% count(dest) and not_cancelled %&gt;% count(tailnum, wt = distance) (without using count()).</i>
 <p>
 </p>
 <pre class="r"><code>not_cancelled &lt;- flights %&gt;% 
@@ -203,7 +203,7 @@ not_cancelled %&gt;%
 ##  9 N107US   21677
 ## 10 N108UW   32070
 ## # ... with 4,027 more rows</code></pre>
-<i>4. For each destination, compute the total minutes of delay. For each flight, compute the proportion of the total delay for its destination.
+<i>4. For each destination, compute the total minutes of delay. For each flight, compute the proportion of the total delay for its destination.</i>
 <p>
 </p>
 <pre class="r"><code>flights %&gt;% 
@@ -241,10 +241,9 @@ not_cancelled %&gt;%
 ##  9 N0EGMQ  DTW        0.174
 ## 10 N0EGMQ  MSP        0.317
 ## # ... with 44,455 more rows</code></pre>
-<i>5. Delays are typically temporally correlated: even once the problem that caused the initial delay has been resolved, later flights are delayed to allow earlier flights to leave. Using lag() explore how the delay of a flight is related to the delay of the immediately preceding flight.
+<i>5. Delays are typically temporally correlated: even once the problem that caused the initial delay has been resolved, later flights are delayed to allow earlier flights to leave. Using lag() explore how the delay of a flight is related to the delay of the immediately preceding flight.</i>
 <p>
 </p>
-<p>summarize(correlation = cor(dep_delay, lagdelay, use = “complete.obs”))</p>
 <pre class="r"><code>flights %&gt;%
   select(year, month, day, hour, dest, dep_delay) %&gt;%
   group_by(dest) %&gt;%
@@ -266,112 +265,109 @@ not_cancelled %&gt;%
 ##  9 BGR            0.0807
 ## 10 BHM            0.0540
 ## # ... with 93 more rows</code></pre>
+<p>
 There does appear to be a positive correlation - at least in some locations (e.g. IAH, MDW, MCO) - between the lagged previous flight and the current flighr delay.
+</p>
 <p>
 </p>
-<i>6.Look at each destination. Can you find flights that are suspiciously fast? (i.e. flights that represent a potential data entry error). Compute the air time a flight relative to the shortest flight to that destination. Which flights were most delayed in the air?
+<i>6.Look at each destination. Can you find flights that are suspiciously fast? (i.e. flights that represent a potential data entry error). Compute the air time a flight relative to the shortest flight to that destination. Which flights were most delayed in the air?</i>
 <p>
 </p>
-<pre class="r"><code>flights %&gt;%
+<pre class="r"><code>data(flights)
+
+flights %&gt;%
   group_by(dest) %&gt;%
-  mutate(fast = air_time - min(air_time, na.rm = TRUE)) %&gt;%
-  arrange(-fast) %&gt;%
-  select(tailnum, air_time, fast)</code></pre>
+  mutate(mean_air = mean(air_time, na.rm = TRUE), fast = ((air_time - mean_air)/mean_air))%&gt;%
+  select(tailnum, air_time, mean_air, fast)%&gt;%
+  arrange(fast)</code></pre>
 <pre><code>## Adding missing grouping variables: `dest`</code></pre>
-<pre><code>## # A tibble: 336,776 x 4
+<pre><code>## # A tibble: 336,776 x 5
 ## # Groups:   dest [105]
-##    dest  tailnum air_time  fast
-##    &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;
-##  1 SFO   N703TW       490   195
-##  2 LAX   N178DN       440   165
-##  3 EGE   N5DBAA       382   163
-##  4 DEN   N578UA       331   149
-##  5 LAX   N192DN       422   147
-##  6 LAS   N852UA       399   143
-##  7 SFO   N727TW       438   143
-##  8 SAN   N794JB       413   134
-##  9 HNL   N77066       695   133
-## 10 SFO   N319AA       426   131
+##    dest  tailnum air_time mean_air   fast
+##    &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+##  1 BOS   N947UW      21.0     39.0 -0.461
+##  2 ATL   N666DN      65.0    113   -0.424
+##  3 GSP   N14568      55.0     93.4 -0.411
+##  4 BOS   N947UW      23.0     39.0 -0.410
+##  5 BNA   N12567      70.0    114   -0.388
+##  6 MSP   N17196      93.0    151   -0.382
+##  7 PHL   N13913      21.0     33.2 -0.367
+##  8 PHL   N12921      21.0     33.2 -0.367
+##  9 PHL   N8501F      21.0     33.2 -0.367
+## 10 CVG   N11544      62.0     96.0 -0.354
 ## # ... with 336,766 more rows</code></pre>
-<pre class="r"><code>flights %&gt;%
-  group_by(dest) %&gt;%
-  mutate(error = air_time - 1.2*(mean(air_time, na.rm = TRUE))) %&gt;%
-  arrange(air_time) %&gt;%
-  select(tailnum,error) </code></pre>
-<pre><code>## Adding missing grouping variables: `dest`</code></pre>
-<pre><code>## # A tibble: 336,776 x 3
-## # Groups:   dest [105]
-##    dest  tailnum  error
-##    &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;
-##  1 BDL   N16911  -10.6 
-##  2 BDL   N12167  -10.6 
-##  3 BDL   N27200  - 9.56
-##  4 PHL   N13913  -18.8 
-##  5 BDL   N13955  - 9.56
-##  6 PHL   N12921  -18.8 
-##  7 BOS   N947UW  -25.7 
-##  8 PHL   N8501F  -18.8 
-##  9 BDL   N12160  - 9.56
-## 10 BDL   N16987  - 9.56
-## # ... with 336,766 more rows</code></pre>
-Tail numbers N703TW, N178DN and N5DBAA had the longest delay in the air.
+<p>
+Comparing to the mean flight time, N947UW, N666DN and N14568 tail numbers are far below the flight time average by location. Tail numbers N703TW, N178DN and N5DBAA had the longest delay in the air.
+</p>
 <p>
 </p>
 <h2>
-10.5 Exercises - return to # 2
+10.5 Exercises
 </h2>
-<i>1.How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).
+<i>1.How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).</i>
 <p>
 </p>
+<p>
 Tibbles only print out the first few rows of data instead of all of the data like in a data frame. Tibbles also indicate the type of date at the top of the columns.
+</p>
 <p>
 </p>
-<i>2.Compare and contrast the following operations on a data.frame and equivalent tibble. What is different? Why might the default data frame behaviours cause you frustration?
+<i>2.Compare and contrast the following operations on a data.frame and equivalent tibble. What is different? Why might the default data frame behaviours cause you frustration?</i>
 <p>
 </p>
-Answer.
+<p>
+$ returns a response for the data frame, while the tibble does not when an incomplete column name is provided. The tibble approach decreases the likelihood of a mis-type resulting in pulling the wrong data. For the [ to select data, the data frame returns a vector. If you were feeding this into another argument you may need to know the size of the vector, which could lead to errors in downstream code.
+</p>
 <p>
 </p>
 <pre class="r"><code>df &lt;- data.frame(abc = 1, xyz = &quot;a&quot;)
 df$x</code></pre>
 <pre><code>## [1] a
 ## Levels: a</code></pre>
-<pre class="r"><code>df[, &quot;xyz&quot;]</code></pre>
-<pre><code>## [1] a
-## Levels: a</code></pre>
-<pre class="r"><code>df[, c(&quot;abc&quot;, &quot;xyz&quot;)]</code></pre>
-<pre><code>##   abc xyz
-## 1   1   a</code></pre>
 <pre class="r"><code>df_tibble &lt;- as_tibble(df)
 df_tibble$x</code></pre>
 <pre><code>## Warning: Unknown or uninitialised column: 'x'.</code></pre>
 <pre><code>## NULL</code></pre>
+<pre class="r"><code>df &lt;- data.frame(abc = 1, xyz = &quot;a&quot;)
+df_tibble &lt;- as_tibble(df)
+df[, &quot;xyz&quot;]</code></pre>
+<pre><code>## [1] a
+## Levels: a</code></pre>
 <pre class="r"><code>df_tibble[, &quot;xyz&quot;]</code></pre>
 <pre><code>## # A tibble: 1 x 1
 ##   xyz  
 ##   &lt;fct&gt;
 ## 1 a</code></pre>
+<pre class="r"><code>df &lt;- data.frame(abc = 1, xyz = &quot;a&quot;)
+df_tibble &lt;- as_tibble(df)
+df[, c(&quot;abc&quot;, &quot;xyz&quot;)]</code></pre>
+<pre><code>##   abc xyz
+## 1   1   a</code></pre>
 <pre class="r"><code>df_tibble[, c(&quot;abc&quot;, &quot;xyz&quot;)]</code></pre>
 <pre><code>## # A tibble: 1 x 2
 ##     abc xyz  
 ##   &lt;dbl&gt; &lt;fct&gt;
 ## 1  1.00 a</code></pre>
-<i>3.If you have the name of a variable stored in an object, e.g. var &lt;- “mpg”, how can you extract the reference variable from a tibble?
+<i>3.If you have the name of a variable stored in an object, e.g. var &lt;- “mpg”, how can you extract the reference variable from a tibble? </i>
 <p>
 </p>
+<p>
 You can utilize square brackets to extract the name of a variable stored in an object of a tibble.
+</p>
 <p>
 </p>
-<i>6.What option controls how many additional column names are printed at the footer of a tibble?
+<i>6.What option controls how many additional column names are printed at the footer of a tibble?</i>
 <p>
 </p>
+<p>
 From Help, n_extra decides the extra columns for which to print abbreviated information .
+<p>
 <p>
 </p>
 <h2>
 12.3.3 Exercises - return to # 2
 </h2>
-<i>2. Why does this code fail?
+<i>2. Why does this code fail?</i>
 <p>
 </p>
 <pre class="r"><code>table4a %&gt;% 
@@ -385,10 +381,12 @@ From Help, n_extra decides the extra columns for which to print abbreviated info
 ## 4 Afghanistan 2000    2666
 ## 5 Brazil      2000   80488
 ## 6 China       2000  213766</code></pre>
+<p>
 The Column names needed to be in quotes.
+</p>
 <p>
 </p>
-<i>3.Why does spreading this tibble fail? How could you add a new column to fix the problem?
+<i>3.Why does spreading this tibble fail? How could you add a new column to fix the problem?</i>
 <p>
 </p>
 <pre class="r"><code>people &lt;- tribble(
@@ -408,10 +406,12 @@ spread(people,key,value)</code></pre>
 ## 1 Jessica Cordero  1990  37.0    156
 ## 2 Phillip Woods    1990  45.0    186
 ## 3 Phillip Woods    2000  50.0     NA</code></pre>
-Phillip has two rows with two different ages, which is causing the error. Perhaps this data is missing a year that would make it all unique.
+<p>
+Phillip has two rows with two different ages, which is causing the error. Perhaps this data is missing a year that would make it all the rows unique.
+</p>
 <p>
 </p>
-<i>4.Tidy the simple tibble below. Do you need to spread or gather it? What are the variables?
+<i>4.Tidy the simple tibble below. Do you need to spread or gather it? What are the variables?</i>
 <p>
 </p>
 <pre class="r"><code>preg &lt;- tribble(
@@ -428,16 +428,20 @@ gather(preg,sex, count, male, female) </code></pre>
 ## 2 no       male    20.0
 ## 3 yes      female  10.0
 ## 4 no       female  12.0</code></pre>
+<p>
 The variables are gender, pregnant and count. We need to gather.
+</p>
 <p>
 </p>
 <h2>
 Section 12.4.3 Exercises
 </h2>
-<i>1.What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets.
+<i>1.What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets.</i>
 <p>
 </p>
+<p>
 If sep is a character vector, “extra” controls what happens when there are too many pieces. There are three valid options: warn, drop or merge. If sep is a character vector, fill&quot; controls what happens when there are not enough pieces. There are three valid options: warn, right and left.
+</p>
 <p>
 </p>
 <pre class="r"><code>tibble(x = c(&quot;a,b,c&quot;, &quot;d,e,f,g&quot;, &quot;h,i,j&quot;)) %&gt;% 
@@ -490,10 +494,12 @@ If sep is a character vector, “extra” controls what happens when there are t
 ## 1 a     b     c    
 ## 2 d     e     &lt;NA&gt; 
 ## 3 f     g     i</code></pre>
-<i>2.Both unite() and separate() have a remove argument. What does it do? Why would you set it to FALSE?
+<i>2.Both unite() and separate() have a remove argument. What does it do? Why would you set it to FALSE?</i>
 <p>
 </p>
+<p>
 “remove” if it is true removes input columsn from the output data frame.You may use it if you want to create a new variable based on an old variable and also keep the old variable.
+</p>
 <p>
 </p>
 <h2>
@@ -517,31 +523,17 @@ baby &lt;-read_delim(file_path,delim=&quot;|&quot;)</code></pre>
 ## $ name &lt;chr&gt; &quot;Mary&quot;, &quot;Anna&quot;, &quot;Emma&quot;, &quot;Elizabeth&quot;, &quot;Minnie&quot;, &quot;Margaret&quot;...
 ## $ n    &lt;int&gt; 7065, 2604, 2003, 1939, 1746, 1578, 1472, 1414, 1320, 128...
 ## $ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...</code></pre>
-<pre class="r"><code>saveRDS(flights, file = &quot;/Users/shamilto/Downloads/baby_names.rds&quot;)</code></pre>
+<pre class="r"><code>saveRDS(baby, file = &quot;/Users/shamilto/Downloads/baby_names.rds&quot;)</code></pre>
 <pre class="r"><code>file_path2 &lt;- '/Users/shamilto/Downloads/baby_names.rds'
 baby2 &lt;-read_rds(file_path2)
 glimpse(baby2)</code></pre>
-<pre><code>## Observations: 336,776
-## Variables: 19
-## $ year           &lt;int&gt; 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013,...
-## $ month          &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
-## $ day            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
-## $ dep_time       &lt;int&gt; 517, 533, 542, 544, 554, 554, 555, 557, 557, 55...
-## $ sched_dep_time &lt;int&gt; 515, 529, 540, 545, 600, 558, 600, 600, 600, 60...
-## $ dep_delay      &lt;dbl&gt; 2, 4, 2, -1, -6, -4, -5, -3, -3, -2, -2, -2, -2...
-## $ arr_time       &lt;int&gt; 830, 850, 923, 1004, 812, 740, 913, 709, 838, 7...
-## $ sched_arr_time &lt;int&gt; 819, 830, 850, 1022, 837, 728, 854, 723, 846, 7...
-## $ arr_delay      &lt;dbl&gt; 11, 20, 33, -18, -25, 12, 19, -14, -8, 8, -2, -...
-## $ carrier        &lt;chr&gt; &quot;UA&quot;, &quot;UA&quot;, &quot;AA&quot;, &quot;B6&quot;, &quot;DL&quot;, &quot;UA&quot;, &quot;B6&quot;, &quot;EV&quot;,...
-## $ flight         &lt;int&gt; 1545, 1714, 1141, 725, 461, 1696, 507, 5708, 79...
-## $ tailnum        &lt;chr&gt; &quot;N14228&quot;, &quot;N24211&quot;, &quot;N619AA&quot;, &quot;N804JB&quot;, &quot;N668DN...
-## $ origin         &lt;chr&gt; &quot;EWR&quot;, &quot;LGA&quot;, &quot;JFK&quot;, &quot;JFK&quot;, &quot;LGA&quot;, &quot;EWR&quot;, &quot;EWR&quot;...
-## $ dest           &lt;chr&gt; &quot;IAH&quot;, &quot;IAH&quot;, &quot;MIA&quot;, &quot;BQN&quot;, &quot;ATL&quot;, &quot;ORD&quot;, &quot;FLL&quot;...
-## $ air_time       &lt;dbl&gt; 227, 227, 160, 183, 116, 150, 158, 53, 140, 138...
-## $ distance       &lt;dbl&gt; 1400, 1416, 1089, 1576, 762, 719, 1065, 229, 94...
-## $ hour           &lt;dbl&gt; 5, 5, 5, 5, 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5,...
-## $ minute         &lt;dbl&gt; 15, 29, 40, 45, 0, 58, 0, 0, 0, 0, 0, 0, 0, 0, ...
-## $ time_hour      &lt;dttm&gt; 2013-01-01 05:00:00, 2013-01-01 05:00:00, 2013...</code></pre>
+<pre><code>## Observations: 30,000
+## Variables: 5
+## $ year &lt;int&gt; 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 188...
+## $ sex  &lt;chr&gt; &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F...
+## $ name &lt;chr&gt; &quot;Mary&quot;, &quot;Anna&quot;, &quot;Emma&quot;, &quot;Elizabeth&quot;, &quot;Minnie&quot;, &quot;Margaret&quot;...
+## $ n    &lt;int&gt; 7065, 2604, 2003, 1939, 1746, 1578, 1472, 1414, 1320, 128...
+## $ prop &lt;dbl&gt; 0.072384329, 0.026679234, 0.020521700, 0.019865989, 0.017...</code></pre>
 
 
 
