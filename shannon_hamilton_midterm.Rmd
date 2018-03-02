@@ -66,11 +66,46 @@ my_vector
 
 <i>1. Download the rail_trail.txt file from Canvas (in the Midterm Exam section here) and successfully import it into R. Prove that it was imported successfully by including your import code and taking a glimpse of the result</i><p></p>
 
-<p></p>
+```{r}
+file_path <- '/Users/shamilto/Downloads/rail_trail.txt'
+rail <-read_delim(file_path,delim="|")
+glimpse(rail)
+```
 
 <i>2. Export the file into an R-specific format and name it “rail_trail.rds”. Make sure you define the path correctly so that you know where it gets saved. Then reload the file. Include your export and import code and take another glimpse.</i><p></p>
 
+```{r}
+saveRDS(rail, file = "/Users/shamilto/Downloads/rail_trail.rds")
+```
+
+```{r}
+file_path2 <- '/Users/shamilto/Downloads/rail_trail.rds'
+rail2 <-read_rds(file_path2)
+glimpse(rail2)
+```
+
+<h2>Visualization</h2>
+
+<i>1.Critique this graphic: give only three examples of what is wrong with this graphic. Be concise.</i><p></p>
+
 <p></p>
 
+<ul>
+<li>Comaring gender and age in the same axis is confusing and potentially misleading as there is potentially an interaction effect between gender and age in peoples' opinion on this topic </li>
+<li>It is hard to compare the relative size of the bubbles and the colors aren't much help either!</li>
+<li>It is confusing there isn't any deliniation between yes and no outside of the titles </li>
+</ul>
+
+<p></p>
+
+<i>2. Reproduce this graphic using the diamonds data set.</i><p></p>
+
+<p></p>
+
+<p></p>
+
+<i>3. The previous graphic is not very useful. We can make it much more useful by changing one thing about it. Make the change and plot it again.</i><p></p>
+
+<p></p>
 
 
