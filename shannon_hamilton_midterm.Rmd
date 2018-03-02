@@ -84,7 +84,7 @@ rail2 <-read_rds(file_path2)
 glimpse(rail2)
 ```
 
-<h2>Visualization</h2>
+<h2>Visualization - Q2, Q3</h2>
 
 <i>1.Critique this graphic: give only three examples of what is wrong with this graphic. Be concise.</i><p></p>
 
@@ -100,12 +100,160 @@ glimpse(rail2)
 
 <i>2. Reproduce this graphic using the diamonds data set.</i><p></p>
 
+```{r}
+ data("diamonds")
+
+ggplot(diamonds) + 
+  geom_boxplot(mapping = aes(x = cut, y = carat,fill=color)) +
+  coord_flip() 
+
+
+#**NEED TO CHANGE AXIS TITLES, not have so many box plots**
+```
+
 <p></p>
 
 <p></p>
 
 <i>3. The previous graphic is not very useful. We can make it much more useful by changing one thing about it. Make the change and plot it again.</i><p></p>
 
+<p>Removing outliers will allow us to better see the core of the data in the boxplot.</p>
+
+
+
+
+<h2>Data munging and wrangling - Q3 </h2>
+
+<i>1. Is this data “tidy”? If yes, leave it alone and go to the next problem. If no, make it tidy</i>
+
+<p>This data is not tidy. "Cases" and "Population" should be their own columns.</p>
+
+```{r}
+  table2
+  spread(table2, key = type, value = count)
+```
+
+
+<i>2.Create a new column in the diamonds data set called price_per_carat that shows the price of each
+diamond per carat (hint: divide). Only show me the code, not the output.</i><p></p>
+
+```{r}
+  data("diamonds")
+
+  diamonds %>%
+  mutate(price_per_carat = (price/carat))  %>%
+  arrange(-price_per_carat)
+  
+```
+
+<i>3.For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price > 10000 and a carat < 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.</i><p></p>
+
+```{r}
+  data("diamonds")
+
+diamonds %>%
+  group_by(cut) %>%
+  select(cut, price, carat) %>%
+  filter(carat > 1.5, price > 10000) %>%
+  summarise(count = n())
+
+diamonds %>%
+  group_by(cut) %>%
+  select(cut, price, carat) %>%
+  mutate(select_diamonds = carat > 1.5, price > 10000) %>%
+  summarise(proportion = sum(select_diamonds))
+```
+
+<i>3.a) Do the results make sense? Why?</i>
+
 <p></p>
+
+<i>3.b) Do we need to be wary of any of these numbers? Why?</i><p></p>
+
+<p></p>
+
+<h2>EDA - Q2, Q5</h2>
+
+<i> Take a look at the txhousing data set that is included with the ggplot2 package and answer these questions:</i><p></p>
+mutate(proportion_missing= ((count(is.na(sales)))/count(sales)))
+
+
+txhousing %>%
+mutate(missing= count(is.na(sales))
+group_by(city) %>%
+select(city,sales)
+```{r}
+data("txhousing")
+  
+#Question 1
+txhousing %>%
+ count(year)
+
+#Question 2
+#INSERT CODE 
+#txhousing %>%
+#summarize_all(city)
+
+#Question 3
+txhousing %>%
+select(city,year,month,sales) %>%
+ arrange(-sales)
+
+#Question 4
+txhousing %>%
+summarize(listing_sales_corr = cor(listings, sales, use = "complete.obs"))
+
+#Question 5
+
+
+#INSERT CODE
+       
+#Question 6
+
+filtered_housing <-txhousing %>%
+group_by(city,year, month)%>%
+filter(sales>500) 
+
+ggplot(data = filtered_housing) + 
+  geom_point(mapping = aes(x = month, y = median, color=city))+
+  facet_wrap(~ city, nrow = 5)
+
+```
+```{r}
+filtered_housing <-txhousing %>%
+group_by(city,year, month)%>%
+filter(sales>500) 
+
+ggplot(data = filtered_housing) + 
+  geom_point(mapping = aes(x = month, y = median, color=city))+
+  facet_wrap(~ city, nrow = 5)
+
+```
+
+<i> 1. During what time period is this data from?</i>
+<p> This data is from 2000 - 2015. </p><p></p>
+
+<i> 2. How many cities are represented?</i>
+<p></p><p></p>
+
+<i> 3. Which city, month and year had the highest number of sales?</i>
+<p> Houston in July 2015 has the highest number of sales.</p><p></p>
+
+<i> 4. What kind of relationship do you think exists between the number of listings and the number of sales?
+Check your assumption and show your work.</i>
+<p>My hypothesis is that there is a positive relationship between the number of listings and the number of sales. I checked my assumption by compusting the correlation between these two variables and was correct. The correlation is very high at 0.92. </p><p></p>
+
+<i> 5. What proportion of sales is missing for each city?</i>
+<p></p>
+
+<i> 6. Looking at only the cities and months with greater than 500 sales: (a) Are the distributions of the median sales price (column name median), when grouped by city,different? The same? Show your work. (b)Any cities that stand out that you’d want to investigate further? (c) Why might we want to filter out all cities and months with sales less than 500?</i>
+<p>The distribution of median sales is different by city in terms of the min/max of values, the variation of those values, and the number of median sales > 500. Corpus Christie has few values represented.Fort Bend has a larger variance in median prices compared to El Paso. Median prices in Collin Country are generally higher than Fort Worth.  </p><p></p>
+
+<h2>Git and Github </h2>
+
+<i> Github Repository:</i><p></p>
+
+
+
 
 
