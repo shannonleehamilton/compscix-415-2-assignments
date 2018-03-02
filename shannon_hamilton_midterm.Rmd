@@ -3,8 +3,8 @@ title: "COMPSCIX 415.2 Homework 5/Midterm"
 author: "Shannon Hamilton"
 date: "3/1/2018"
 output: 
-  html_document:
-  self_contained: true
+    html_document:
+    self_contained: true
 ---
 
 ```{r setup, include=FALSE}
@@ -12,9 +12,65 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r load_packages, warning=FALSE, message=FALSE}
-library(mdsr)
 library(tidyverse)
-library(nycflights13)
 ```
+
+**ADD TABLE OF CONTENTS**
+<h2> The tidyverse packages</h2>
+
+
+<i>1. Can you name which package is associated with each task below?</i><p></p>
+
+<ul>
+<li>Plotting - ggplot2 </li>
+<li>Data munging/wrangling - dplyr </li>
+<li>Reshaping (speading and gathering) data -  tidyr </li>
+<li>Importing/exporting data - readr </li>
+</ul>
+
+<i>2. Now can you name two functions that you’ve used from each package that you listed above for these tasks?</i><p></p>
+
+<ul>
+<li>Plotting - ggplot2: geom_point, geom_boxplot </li>
+<li>Data munging/wrangling - dplyr: filter, select </li>
+<li>Reshaping (speading and gathering) data -  tidyr: </li>
+<li>Importing/exporting data - readr:read_delim, write_delim </li>
+</ul>
+
+<h2>R Basics</h2>
+
+<i>1. Fix this code with the fewest number of changes possible so it works:</i><p></p>
+
+```{r}
+My_data.name___is.too00ooLong <- c( 1 , 2 , 3 )
+
+```
+<p></p>
+<i>2. Fix this code so it work:</i><p></p>
+
+```{r}
+my_string <- c('has', 'an', 'error', 'in', 'it')
+```
+
+<p></p>
+<i>3.Look at the code below and comment on what happened to the values in the vector:</i><p></p>
+
+```{r}
+my_vector <- c(1, 2, '3', '4', 5)
+my_vector
+```
+
+<p>Since some of the values in the vector are indicated to be a string (by putting them in quotations), R converts all of the values in the vector strings instead of recognizing them as numbers. </p>
+
+<h2>Data import/export</h2>
+
+<i>1. Download the rail_trail.txt file from Canvas (in the Midterm Exam section here) and successfully import it into R. Prove that it was imported successfully by including your import code and taking a glimpse of the result</i><p></p>
+
+<p></p>
+
+<i>2. Export the file into an R-specific format and name it “rail_trail.rds”. Make sure you define the path correctly so that you know where it gets saved. Then reload the file. Include your export and import code and take another glimpse.</i><p></p>
+
+<p></p>
+
 
 
