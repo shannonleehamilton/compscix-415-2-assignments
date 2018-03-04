@@ -124,12 +124,21 @@ $(document).ready(function () {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#the-tidyverse-packages">The tidyverse packages</a></li>
+<li><a href="#r-basics">R Basics</a></li>
+<li><a href="#data-importexport">Data import/export</a></li>
+<li><a href="#visualization---q2-q3">Visualization - Q2, Q3</a></li>
+<li><a href="#data-munging-and-wrangling---q3">Data munging and wrangling - Q3</a></li>
+<li><a href="#git-and-github">Git and Github</a></li>
+</ul>
+</div>
 
+<pre><code>self_contained: true</code></pre>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<strong>ADD TABLE OF CONTENTS</strong>
-<h2>
-The tidyverse packages
-</h2>
+<div id="the-tidyverse-packages" class="section level2">
+<h2>The tidyverse packages</h2>
 <i>1. Can you name which package is associated with each task below?</i>
 <p>
 </p>
@@ -164,9 +173,9 @@ Reshaping (speading and gathering) data - tidyr:
 Importing/exporting data - readr:read_delim, write_delim
 </li>
 </ul>
-<h2>
-R Basics
-</h2>
+</div>
+<div id="r-basics" class="section level2">
+<h2>R Basics</h2>
 <i>1. Fix this code with the fewest number of changes possible so it works:</i>
 <p>
 </p>
@@ -188,9 +197,9 @@ my_vector</code></pre>
 <p>
 Since some of the values in the vector are indicated to be a string (by putting them in quotations), R converts all of the values in the vector strings instead of recognizing them as numbers.
 </p>
-<h2>
-Data import/export
-</h2>
+</div>
+<div id="data-importexport" class="section level2">
+<h2>Data import/export</h2>
 <i>1. Download the rail_trail.txt file from Canvas (in the Midterm Exam section here) and successfully import it into R. Prove that it was imported successfully by including your import code and taking a glimpse of the result</i>
 <p>
 </p>
@@ -241,9 +250,9 @@ glimpse(rail2)</code></pre>
 ## $ precip     &lt;dbl&gt; 0.00, 0.29, 0.32, 0.00, 0.14, 0.02, 0.00, 0.00, 0.0...
 ## $ volume     &lt;int&gt; 501, 419, 397, 385, 200, 375, 417, 629, 533, 547, 4...
 ## $ weekday    &lt;int&gt; 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, ...</code></pre>
-<h2>
-Visualization - Q2, Q3
-</h2>
+</div>
+<div id="visualization---q2-q3" class="section level2">
+<h2>Visualization - Q2, Q3</h2>
 <i>1.Critique this graphic: give only three examples of what is wrong with this graphic. Be concise.</i>
 <p>
 </p>
@@ -282,9 +291,9 @@ ggplot(diamonds) +
 <p>
 Removing outliers will allow us to better see the core of the data in the boxplot.
 </p>
-<h2>
-Data munging and wrangling - Q3
-</h2>
+</div>
+<div id="data-munging-and-wrangling---q3" class="section level2">
+<h2>Data munging and wrangling - Q3</h2>
 <p><i>1. Is this data “tidy”? If yes, leave it alone and go to the next problem. If no, make it tidy</i></p>
 <p>
 This data is not tidy. “Cases” and “Population” should be their own columns.
@@ -493,12 +502,13 @@ The distribution of median sales is different by city in terms of the min/max of
 </p>
 <p>
 </p>
-<h2>
-Git and Github
-</h2>
+</div>
+<div id="git-and-github" class="section level2">
+<h2>Git and Github</h2>
 <i> Github Repository:<a href="https://github.com/shannonleehamilton/compscix-415-2-assignments.git" class="uri">https://github.com/shannonleehamilton/compscix-415-2-assignments.git</a> </i>
 <p>
 </p>
+</div>
 
 
 

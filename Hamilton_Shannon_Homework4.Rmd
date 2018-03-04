@@ -4,7 +4,8 @@ author: "Shannon Hamilton"
 date: "2/20/2018"
 output: 
   html_document:
-  self_contained: true
+  self_contained: 
+  true
 ---
 
 ```{r setup, include=FALSE}

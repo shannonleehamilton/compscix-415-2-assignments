@@ -3,10 +3,11 @@ title: "COMPSCIX 415.2 Homework 5/Midterm"
 author: "Shannon Hamilton"
 date: "3/1/2018"
 output: 
-    html_document:
+  html_document: 
+    toc: yes
     self_contained: true
 ---
-
+    self_contained: true
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -15,8 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-**ADD TABLE OF CONTENTS**
-<h2> The tidyverse packages</h2>
+
+##The tidyverse packages
 
 
 <i>1. Can you name which package is associated with each task below?</i><p></p>
@@ -37,7 +38,7 @@ library(tidyverse)
 <li>Importing/exporting data - readr:read_delim, write_delim </li>
 </ul>
 
-<h2>R Basics</h2>
+##R Basics
 
 <i>1. Fix this code with the fewest number of changes possible so it works:</i><p></p>
 
@@ -62,7 +63,7 @@ my_vector
 
 <p>Since some of the values in the vector are indicated to be a string (by putting them in quotations), R converts all of the values in the vector strings instead of recognizing them as numbers. </p>
 
-<h2>Data import/export</h2>
+##Data import/export
 
 <i>1. Download the rail_trail.txt file from Canvas (in the Midterm Exam section here) and successfully import it into R. Prove that it was imported successfully by including your import code and taking a glimpse of the result</i><p></p>
 
@@ -84,7 +85,7 @@ rail2 <-read_rds(file_path2)
 glimpse(rail2)
 ```
 
-<h2>Visualization - Q2, Q3</h2>
+##Visualization - Q2, Q3
 
 <i>1.Critique this graphic: give only three examples of what is wrong with this graphic. Be concise.</i><p></p>
 
@@ -122,7 +123,7 @@ ggplot(diamonds) +
 
 
 
-<h2>Data munging and wrangling - Q3 </h2>
+##Data munging and wrangling - Q3 
 
 <i>1. Is this data “tidy”? If yes, leave it alone and go to the next problem. If no, make it tidy</i>
 
@@ -249,7 +250,7 @@ Check your assumption and show your work.</i>
 <i> 6. Looking at only the cities and months with greater than 500 sales: (a) Are the distributions of the median sales price (column name median), when grouped by city,different? The same? Show your work. (b)Any cities that stand out that you’d want to investigate further? (c) Why might we want to filter out all cities and months with sales less than 500?</i>
 <p>The distribution of median sales is different by city in terms of the min/max of values, the variation of those values, and the number of median sales > 500. Corpus Christie has few values represented.Fort Bend has a larger variance in median prices compared to El Paso. Median prices in Collin Country are generally higher than Fort Worth.  </p><p></p>
 
-<h2>Git and Github </h2>
+##Git and Github 
 
 <i> Github Repository:https://github.com/shannonleehamilton/compscix-415-2-assignments.git </i><p></p>
 
