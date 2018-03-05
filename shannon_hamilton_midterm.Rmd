@@ -7,7 +7,7 @@ output:
     toc: yes
     self_contained: true
 ---
-    self_contained: true
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
+<i> Github Repository:https://github.com/shannonleehamilton/compscix-415-2-assignments.git </i><p></p>
+  
 
 ##The tidyverse packages
 
@@ -105,11 +107,12 @@ glimpse(rail2)
  data("diamonds")
 
 ggplot(diamonds) + 
-  geom_boxplot(mapping = aes(x = cut, y = carat,fill=color)) +
-  coord_flip() 
+  geom_boxplot(mapping = aes(x = cut, y = carat, fill=color)) +
+  xlab("Cut of Diamond") +
+  ylab("Carat of Diamond") +
+  coord_flip()
 
 
-#**NEED TO CHANGE AXIS TITLES, not have so many box plots**
 ```
 
 <p></p>
@@ -118,12 +121,22 @@ ggplot(diamonds) +
 
 <i>3. The previous graphic is not very useful. We can make it much more useful by changing one thing about it. Make the change and plot it again.</i><p></p>
 
-<p>Removing outliers will allow us to better see the core of the data in the boxplot.</p>
+<p>It is hard to map/ compare the "color" variable fill within the plot. Side-by-side boxplots to compare.</p>
+
+```{r}
+ data("diamonds")
+
+ggplot(diamonds) + 
+  geom_boxplot(mapping = aes(x = cut, y = carat, fill=color)) +
+  xlab("Cut of Diamond") +
+  ylab("Carat of Diamond") +
+  coord_flip()
 
 
+```
 
 
-##Data munging and wrangling - Q3 
+##Data munging and wrangling 
 
 <i>1. Is this data “tidy”? If yes, leave it alone and go to the next problem. If no, make it tidy</i>
 
@@ -149,40 +162,44 @@ diamond per carat (hint: divide). Only show me the code, not the output.</i><p><
 
 <i>3.For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price > 10000 and a carat < 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.</i><p></p>
 
+  
 ```{r}
   data("diamonds")
 
-diamonds %>%
+  (select_count <-  diamonds %>%
   group_by(cut) %>%
+  filter(carat > 1 & price > 10000) %>%
   select(cut, price, carat) %>%
-  filter(carat > 1.5, price > 10000) %>%
-  summarise(count = n())
+  summarise(select_count = n()))
 
-diamonds %>%
+(count <- diamonds %>%
   group_by(cut) %>%
   select(cut, price, carat) %>%
-  mutate(select_diamonds = carat > 1.5, price > 10000) %>%
-  summarise(proportion = sum(select_diamonds))
+  summarise(count = n()))
+
+
+
 ```
 
 <i>3.a) Do the results make sense? Why?</i>
 
-<p></p>
+<p>I expected that the proportion of diamonds that meet our critera would increase with the cut quality, since  I would have expected larger expensive diamonds to have a better cut. However, the proportion that meet our critera is around the same (8-9%) across all the cuts except for "premium"</p>
 
 <i>3.b) Do we need to be wary of any of these numbers? Why?</i><p></p>
 
-<p></p>
+<p>I would be wary of the "premium" information given its percentage of our select diamonds is much higher than the other categories of cut (13%). I also am warry that this sample seems to have a lot of "ideal" and "premium" diamonds, while I would imagine that the higher the cut quality, the smaller the number of diamonds available (the opporiste trend of this data).</p>
 
-<h2>EDA - Q2, Q5</h2>
+<h2>EDA - Q5</h2>
 
 <i> Take a look at the txhousing data set that is included with the ggplot2 package and answer these questions:</i><p></p>
 mutate(proportion_missing= ((count(is.na(sales)))/count(sales)))
 
 
 txhousing %>%
-mutate(missing= count(is.na(sales))
 group_by(city) %>%
+mutate(missing= count(is.na(sales)) %>%
 select(city,sales)
+
 ```{r}
 data("txhousing")
   
@@ -191,9 +208,9 @@ txhousing %>%
  count(year)
 
 #Question 2
-#INSERT CODE 
-#txhousing %>%
-#summarize_all(city)
+
+ txhousing %>%
+  summarise(num_cities = n_distinct(city))
 
 #Question 3
 txhousing %>%
@@ -235,7 +252,7 @@ ggplot(data = filtered_housing) +
 <p> This data is from 2000 - 2015. </p><p></p>
 
 <i> 2. How many cities are represented?</i>
-<p></p><p></p>
+<p>46 cities are represented.</p><p></p>
 
 <i> 3. Which city, month and year had the highest number of sales?</i>
 <p> Houston in July 2015 has the highest number of sales.</p><p></p>
@@ -248,11 +265,10 @@ Check your assumption and show your work.</i>
 <p></p>
 
 <i> 6. Looking at only the cities and months with greater than 500 sales: (a) Are the distributions of the median sales price (column name median), when grouped by city,different? The same? Show your work. (b)Any cities that stand out that you’d want to investigate further? (c) Why might we want to filter out all cities and months with sales less than 500?</i>
-<p>The distribution of median sales is different by city in terms of the min/max of values, the variation of those values, and the number of median sales > 500. Corpus Christie has few values represented.Fort Bend has a larger variance in median prices compared to El Paso. Median prices in Collin Country are generally higher than Fort Worth.  </p><p></p>
 
-##Git and Github 
+<p>The distribution of median sales is different by city in terms of the min/max of values, the variation of those values, and the number of median sales > 500. Corpus Christie has few values represented.Fort Bend has a larger variance in median prices compared to El Paso. Median prices in Collin Country are generally higher than Fort Worth We may want to filter out sales less than 500 to remove small outlier months that could skew our data interpretation. </p><p></p>
 
-<i> Github Repository:https://github.com/shannonleehamilton/compscix-415-2-assignments.git </i><p></p>
+
 
 
 
