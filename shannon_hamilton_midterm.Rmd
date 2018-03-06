@@ -36,7 +36,7 @@ library(tidyverse)
 <ul>
 <li>Plotting - ggplot2: geom_point, geom_boxplot </li>
 <li>Data munging/wrangling - dplyr: filter, select </li>
-<li>Reshaping (speading and gathering) data -  tidyr: </li>
+<li>Reshaping (speading and gathering) data -  tidyr:gather, spread </li>
 <li>Importing/exporting data - readr:read_delim, write_delim </li>
 </ul>
 
@@ -45,14 +45,14 @@ library(tidyverse)
 <i>1. Fix this code with the fewest number of changes possible so it works:</i><p></p>
 
 ```{r}
-My_data.name___is.too00ooLong <- c( 1 , 2 , 3 )
+(My_data.name___is.too00ooLong <- c( 1 , 2 , 3 ))
 
 ```
 <p></p>
 <i>2. Fix this code so it work:</i><p></p>
 
 ```{r}
-my_string <- c('has', 'an', 'error', 'in', 'it')
+(my_string <- c('has', 'an', 'error', 'in', 'it'))
 ```
 
 <p></p>
@@ -87,14 +87,14 @@ rail2 <-read_rds(file_path2)
 glimpse(rail2)
 ```
 
-##Visualization - Q2, Q3
+##Visualization 
 
 <i>1.Critique this graphic: give only three examples of what is wrong with this graphic. Be concise.</i><p></p>
 
 <p></p>
 
 <ul>
-<li>Comaring gender and age in the same axis is confusing and potentially misleading as there is potentially an interaction effect between gender and age in peoples' opinion on this topic </li>
+<li>Comparing gender and age in the same axis is confusing and potentially misleading as there is potentially an interaction effect between gender and age in peoples' opinion on this topic that isn't considered/displayed </li>
 <li>It is hard to compare the relative size of the bubbles and the colors aren't much help either!</li>
 <li>It is confusing there isn't any deliniation between yes and no outside of the titles </li>
 </ul>
@@ -178,27 +178,29 @@ diamond per carat (hint: divide). Only show me the code, not the output.</i><p><
   summarise(count = n()))
 
 
+select_di <- diamonds %>%
+mutate(select= (carat > 1 & price > 10000)) %>% 
+select (cut, select)
+
+select_di %>%
+group_by(cut)%>%
+summarize(select_prop = mean(select))
+
 
 ```
 
 <i>3.a) Do the results make sense? Why?</i>
 
-<p>I expected that the proportion of diamonds that meet our critera would increase with the cut quality, since  I would have expected larger expensive diamonds to have a better cut. However, the proportion that meet our critera is around the same (8-9%) across all the cuts except for "premium"</p>
+<p>I expected that the proportion of diamonds that meet our critera would increase with the cut quality, since  I would have expected larger expensive diamonds to have a better cut. However, the proportion that meet our critera is around the same (7-9%) across all the cuts except for "premium".</p>
 
 <i>3.b) Do we need to be wary of any of these numbers? Why?</i><p></p>
 
 <p>I would be wary of the "premium" information given its percentage of our select diamonds is much higher than the other categories of cut (13%). I also am warry that this sample seems to have a lot of "ideal" and "premium" diamonds, while I would imagine that the higher the cut quality, the smaller the number of diamonds available (the opporiste trend of this data).</p>
 
-<h2>EDA - Q5</h2>
+##EDA 
 
 <i> Take a look at the txhousing data set that is included with the ggplot2 package and answer these questions:</i><p></p>
-mutate(proportion_missing= ((count(is.na(sales)))/count(sales)))
 
-
-txhousing %>%
-group_by(city) %>%
-mutate(missing= count(is.na(sales)) %>%
-select(city,sales)
 
 ```{r}
 data("txhousing")
@@ -222,22 +224,17 @@ txhousing %>%
 summarize(listing_sales_corr = cor(listings, sales, use = "complete.obs"))
 
 #Question 5
+missing_city <- txhousing %>%
+mutate(missing= (is.na(sales)))%>% 
+select(city, missing)  
+  
+missing_city %>%
+group_by(city) %>%
+summarize(missing_sum = mean(missing))%>%
+arrange(-missing_sum)
 
-
-#INSERT CODE
-       
 #Question 6
 
-filtered_housing <-txhousing %>%
-group_by(city,year, month)%>%
-filter(sales>500) 
-
-ggplot(data = filtered_housing) + 
-  geom_point(mapping = aes(x = month, y = median, color=city))+
-  facet_wrap(~ city, nrow = 5)
-
-```
-```{r}
 filtered_housing <-txhousing %>%
 group_by(city,year, month)%>%
 filter(sales>500) 
@@ -259,14 +256,18 @@ ggplot(data = filtered_housing) +
 
 <i> 4. What kind of relationship do you think exists between the number of listings and the number of sales?
 Check your assumption and show your work.</i>
-<p>My hypothesis is that there is a positive relationship between the number of listings and the number of sales. I checked my assumption by compusting the correlation between these two variables and was correct. The correlation is very high at 0.92. </p><p></p>
+<p>My hypothesis is that there is a positive relationship between the number of listings and the number of sales. I checked my assumption by computing the correlation between these two variables and was correct. The correlation is very high at 0.92. </p><p></p>
 
 <i> 5. What proportion of sales is missing for each city?</i>
-<p></p>
+<p>See above R output. South Padre Island is missing the most sales data. </p>
 
 <i> 6. Looking at only the cities and months with greater than 500 sales: (a) Are the distributions of the median sales price (column name median), when grouped by city,different? The same? Show your work. (b)Any cities that stand out that you’d want to investigate further? (c) Why might we want to filter out all cities and months with sales less than 500?</i>
 
-<p>The distribution of median sales is different by city in terms of the min/max of values, the variation of those values, and the number of median sales > 500. Corpus Christie has few values represented.Fort Bend has a larger variance in median prices compared to El Paso. Median prices in Collin Country are generally higher than Fort Worth We may want to filter out sales less than 500 to remove small outlier months that could skew our data interpretation. </p><p></p>
+<p>(a) The distribution of median sales is different by city in terms of the min/max of values, the variation of those values, and the number of median sales > 500. Corpus Christie has few values represented.Fort Bend has a larger variance in median prices compared to El Paso. Median prices in Collin Country are generally higher than Fort Worth </p><p></p>
+
+<p>(b) I would want to investigate Corpus Christie and Arglington further as they only have data represnted for the summer months. El Paso and Montgomery country should also be investigated as one or months has/have limited data. I also may want to look at the data adjusted for population size.  </p><p></p>
+
+<p>(c) We may want to filter out sales less than 500 to remove small outlier months that could skew our data interpretation.</p><p></p>
 
 
 
