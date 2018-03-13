@@ -74,7 +74,7 @@ facet_wrap(~ age2, nrow=2)
 ```{r}
 n <- 10000
 # look at ?rgamma to read about this function
-gamma_samp <- tibble(x = rgamma(n, shape = 1, scale = 2))
+(gamma_samp <- tibble(x = rgamma(n, shape = 1, scale = 2)))
 
 
 ggplot(gamma_samp, aes(x = x, y = ..count..)) +
@@ -87,6 +87,10 @@ geom_histogram()
 a gamma distribution:</i><p></p>
 
 ```{r}
+
+
+gamma_samp1 <- as.numeric(gamma_samp)
+mean_samp <- mean(gamma_samp1)
 
 #mean_samp <- gamma_samp %>%
   #mean(x, na.rm=TRUE)
@@ -106,6 +110,9 @@ gamma_samp2 <- tibble(x = rgamma(n, shape = 1, scale = 2))
 
 ggplot(gamma_samp2, aes(x = x, y = ..count..)) +
 geom_histogram()
+
+mean_samp <- mean(gamma_samp2)
+
 
 #mean_samp <- gamma_samp2 %>%
  # mean(x, na.rm=TRUE)
@@ -133,5 +140,34 @@ mean_samp[i] <- mean(g_samp)
 
 ```
 
+
+<i>5.Make a histogram of your collection of means from above (mean_samp).</i><p></p>
+
+```{r}
+
+
+ggplot(mean_samp, aes(x = mean_samp, y = ..count..)) +
+geom_histogram()
+
+```
+
+
+<i>6. Calculate the mean and standard deviation of all of your sample means. </i><p></p>
+
+```{r}
+
+#mean and sd
+
+```
+
+<i>7. Did anything surprise you about your answers to #6? </i><p></p>
+
+<p> When you look across the means of many samples of a small size (30), then the mean of the means approaches that of what we would expect from the distribution and the same as using one large sample. </p>
+
+
+<i>8. According to the Central Limit Theorem, the mean of your sampling distribution should be very close
+to 2, and the standard deviation of your sampling distribution should be close to σ/√n = 2/√30 = 0.365.
+Repeat #4-#6, but now with a sample of size n = 300 instead. Do your results match up well with the
+theorem?</i><p></p>
 
 
