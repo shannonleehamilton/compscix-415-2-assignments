@@ -89,16 +89,12 @@ a gamma distribution:</i><p></p>
 ```{r}
 
 
-gamma_samp1 <- as.numeric(gamma_samp)
-mean_samp <- mean(gamma_samp1)
-
-#mean_samp <- gamma_samp %>%
-  #mean(x, na.rm=TRUE)
-
-#sd_samp <- gamma_samp %>%
-#sd(x, na.rm=TRUE)
+(mean_samp <- mean(gamma_samp$x))
+(sd_samp <- sd(gamma_samp$x))
 
 ```
+
+<p> The mean is 1.99 and the standard deviation is 2.03, both of which are close to 2. </p>
 
 
 <i>3. Pretend the distribution of our population of data looks like the plot above. Now take a sample of size n = 30 from a Gamma(1,2) distribution, plot the histogram or density curve, and calculate the mean and standard deviation.</i><p></p>
@@ -111,14 +107,9 @@ gamma_samp2 <- tibble(x = rgamma(n, shape = 1, scale = 2))
 ggplot(gamma_samp2, aes(x = x, y = ..count..)) +
 geom_histogram()
 
-mean_samp <- mean(gamma_samp2)
 
-
-#mean_samp <- gamma_samp2 %>%
- # mean(x, na.rm=TRUE)
-
-#sd_samp <- gamma_samp2 %>%
-#sd(x, na.rm=TRUE)
+(mean_samp2 <- mean(gamma_samp2$x))
+(sd_samp2 <- sd(gamma_samp2$x))
 
 ```
 
@@ -156,7 +147,8 @@ geom_histogram()
 
 ```{r}
 
-#mean and sd
+(mean_samp3 <- mean(mean_samp$mean_samp))
+(sd_samp3 <- sd(mean_samp$mean_samp))
 
 ```
 
@@ -169,5 +161,28 @@ geom_histogram()
 to 2, and the standard deviation of your sampling distribution should be close to σ/√n = 2/√30 = 0.365.
 Repeat #4-#6, but now with a sample of size n = 300 instead. Do your results match up well with the
 theorem?</i><p></p>
+
+```{r}
+
+# create a vector with 10000 NAs
+mean_samp <- rep(NA, 10000)
+
+# start a loop
+for(i in 1:10000) {
+g_samp <- rgamma(300, shape = 1, scale = 2)
+mean_samp[i] <- mean(g_samp)
+}
+# Convert vector to a tibble
+(mean_samp <- tibble(mean_samp))
+
+
+ggplot(mean_samp, aes(x = mean_samp, y = ..count..)) +
+geom_histogram()
+
+(mean_samp4 <- mean(mean_samp$mean_samp))
+(sd_samp4 <- sd(mean_samp$mean_samp))
+```
+
+<p>Yes, the mean and standard deviations meet expectaions of the CLT for a sample size of 300.</p>
 
 
