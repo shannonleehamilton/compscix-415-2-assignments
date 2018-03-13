@@ -2,17 +2,136 @@
 title: "COMPSCIX 415.2 Homework 6"
 author: "Shannon Hamilton"
 date: "3/11/2018"
-output: html_document
+output: 
+  html_document: 
+    toc: yes
+    self_contained: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-
-```{r cars}
-summary(cars)
+```{r load_packages, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(mosaicData)
 ```
+
+##Exercise 1
+
+<i>1. What variables are in this data set?</i><p></p>
+
+<p>The variables in this data scet are (1) the survival status of each woman in the data after 20 years, (2) if each woman is a smoker or not, and (3) each woman's age at the time of the initial survey. </p>
+
+<i>2. How many observations are there and what does each represent?</i><p></p>
+
+<p>There are 1314 observations in the data. Each represents one woman. </p>
+
+<i>3. Create a table (use the R code below as a guide) and a visualization of the relationship between smoking
+status and outcome, ignoring age. What do you see? Does it make sense?</i><p></p>
+
+<p>We see that there are overall more non-smokers than smokers in the data, and more of the non-smokers proportionately were dead at the end of the study than smokers, which is unexpected. I would expect more smokers to be dead, but we are not controlling for age. </p>
+
+```{r}
+data("Whickham") 
+
+Whickham %>%
+count(smoker , outcome )
+
+ggplot(Whickham) + 
+  geom_bar(mapping = aes(x = smoker, fill = outcome))
+
+```
+
+<i>4. Recode the age variable into an ordered factor with three categories: age <= 44, age > 44 & age <=64, and age > 64. Now, recreate visualization from above, but facet on your new age factor. What do you see? Does it make sense?</i><p></p>
+
+
+```{r}
+data("Whickham") 
+
+Wickham1 <- Whickham %>%
+mutate(age2 = cut(age, breaks=c(-Inf, 44, 64, Inf), labels=c("<=44","44_64",">64")))
+
+Wickham1 %>%
+count(age2, smoker , outcome )
+
+ggplot(Wickham1) +
+geom_bar(mapping = aes(x = smoker, fill = outcome)) +
+facet_wrap(~ age2, nrow=2)
+
+ 
+
+```
+
+<p>Now the trend aligns to my expectations once I include age as a factor in the analysis.</p>
+
+
+##Exercise 2
+
+
+<i>1. Generate a random sample of size n = 10000 from a gamma(1,2) distribution and plot a histogram or density curve. Use the code below to help you get your sample</i><p></p>
+
+```{r}
+n <- 10000
+# look at ?rgamma to read about this function
+gamma_samp <- tibble(x = rgamma(n, shape = 1, scale = 2))
+
+
+ggplot(gamma_samp, aes(x = x, y = ..count..)) +
+geom_histogram()
+
+```
+
+
+<i>2. What is the mean and standard deviation of your sample? They should both be close to 2 because for
+a gamma distribution:</i><p></p>
+
+```{r}
+
+#mean_samp <- gamma_samp %>%
+  #mean(x, na.rm=TRUE)
+
+#sd_samp <- gamma_samp %>%
+#sd(x, na.rm=TRUE)
+
+```
+
+
+<i>3. Pretend the distribution of our population of data looks like the plot above. Now take a sample of size n = 30 from a Gamma(1,2) distribution, plot the histogram or density curve, and calculate the mean and standard deviation.</i><p></p>
+
+```{r}
+n <- 30
+gamma_samp2 <- tibble(x = rgamma(n, shape = 1, scale = 2))
+
+
+ggplot(gamma_samp2, aes(x = x, y = ..count..)) +
+geom_histogram()
+
+#mean_samp <- gamma_samp2 %>%
+ # mean(x, na.rm=TRUE)
+
+#sd_samp <- gamma_samp2 %>%
+#sd(x, na.rm=TRUE)
+
+```
+
+<i>4. Take a sample of size n = 30, again from the Gamma(1,2) distribution, calculate the mean, and assign
+it to a vector named mean_samp. Repeat this 10000 times!!!! The code below might help.</i><p></p>
+
+
+```{r}
+# create a vector with 10000 NAs
+mean_samp <- rep(NA, 10000)
+
+# start a loop
+for(i in 1:10000) {
+g_samp <- rgamma(30, shape = 1, scale = 2)
+mean_samp[i] <- mean(g_samp)
+}
+# Convert vector to a tibble
+(mean_samp <- tibble(mean_samp))
+
+```
+
+
 
