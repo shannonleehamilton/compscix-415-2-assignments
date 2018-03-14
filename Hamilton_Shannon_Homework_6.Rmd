@@ -94,7 +94,7 @@ a gamma distribution:</i><p></p>
 
 ```
 
-<p> The mean is 1.99 and the standard deviation is 2.03, both of which are close to 2. </p>
+<p> The mean and the standard deviation are both close to 2. </p>
 
 
 <i>3. Pretend the distribution of our population of data looks like the plot above. Now take a sample of size n = 30 from a Gamma(1,2) distribution, plot the histogram or density curve, and calculate the mean and standard deviation.</i><p></p>
@@ -183,6 +183,6 @@ geom_histogram()
 (sd_samp4 <- sd(mean_samp$mean_samp))
 ```
 
-<p>Yes, the mean and standard deviations meet expectaions of the CLT for a sample size of 300.</p>
+<p>The mean and standard deviations meet expectaions of the CLT for a sample size of 300, although the standard deviation is lower than expected.</p>
 
 
