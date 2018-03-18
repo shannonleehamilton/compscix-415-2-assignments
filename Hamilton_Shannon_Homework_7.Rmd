@@ -1,0 +1,164 @@
+---
+title: "Homework 7"
+author: "Shannon Hamilton"
+date: "3/17/2018"
+output: 
+  html_document: 
+    toc: yes
+    self_contained: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_packages, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(broom)
+```
+
+
+##Exercise 1
+
+<i>Load the train.csv dataset into R. How many observations and columns are there?</i><p></p>
+
+```{r}
+file_path <- '/Users/shamilto/Downloads/train.csv'
+train <-read_csv(file_path,col_names=TRUE)
+train <- as.tibble(train)
+glimpse(train)
+
+```
+
+<p>There are 1,460 observatons and 81 variables/columns. </p>
+
+##Exercise 2
+
+```{r}
+set.seed(29283)
+# This data already has an Id column which we can make use of.
+# Let's create our training set using sample_frac. Fill in the blank.
+
+train_set <- train %>% sample_frac(0.7)
+
+# let's create our testing set using the Id column. Fill in the blanks.
+
+test_set <- train %>% filter(!(Id %in% train_set$Id))
+glimpse(test_set)
+```
+
+##Exercise 3
+
+```{r}
+
+mean(train_set$SalePrice)
+
+mod_0 <- lm(SalePrice ~ 1, data = train_set)
+
+tidy(mod_0)
+# Check the R-squared
+glance(mod_0)
+```
+
+##Exercise 4
+
+<i>1. What kind of relationship will these features have with our target?</i><p></p>
+
+<p>I would expect that the square footage of the home and the quality to have positive relationships to the sale price. I would expect certain areas to be correlated with higher sale prices and certain areas to be correlated with lower sale prices.</p>
+
+<i>2. Can the relationship be estimated linearly?</i><p></p>
+
+<p>I think it is reasonable to estimate the relationship linearly. </p>
+
+
+<i>3. Are these good features, given the problem we are trying to solve?</i><p></p>
+
+<p> Yes, I would imagine that the amount of living area, quality of the house and location to be strong predictors of home prices. </p>
+
+<i>After fitting the model, output the coefficients and the R-squared using the broom package:</i><p></p>
+
+```{r}
+
+mod_1 <- lm(SalePrice ~ (GrLivArea+OverallQual+Neighborhood), data = train_set)
+
+tidy(mod_1)
+glance(mod_1)
+
+```
+
+<i>1. How would you interpret the coefficients on GrLivArea and OverallQual?</i><p></p>
+
+<p>For every additional square foot of above ground living, the price of the home increases by $62 on average, holding quality and neighborhood constant.</p>
+<p>For every one point increase in quality, the price of the home increases by $21,692 on average, holding size and neighborhood constant.</p>
+
+<i>2. How would you interpret the coefficient on NeighborhoodBrkSide?</i><p></p>
+
+<p>Compared to Bloomington Heights, a home being located in Brookside on average decreases the value of the home by $14,064, holding size and quality constant.</p>
+
+<i>3. Are the features significant?</i><p></p>
+
+<p>All the features are statistically significant as their p-values are all less than 5% critical value.</p>
+
+<i>4. Are the features practically significant?</i><p></p>
+
+<p>I would say all the features are practically significant given their size impact. Although the per squarefoot increase looks relatively smaller of an impact compared to the other features, one squarefoot is a small measurement compared to the overall size of a house making this a practically significant feautre.</p>
+
+<i>5. Is the model a good fit (to the training set)?</i><p></p>
+
+<p>With an R-squared and adjusted R-squared of ~80%, this model is a good fit to the training set. </p>
+
+
+##Exercise 5
+
+<p>RMSE should be considered wihtin the context of the units of the target feature. 41915 impact on the price of a house I would consider substantial. Therefore, I would say this model didn't performa as well on the test data as I would have hoped;. </p>
+
+```{r}
+
+test_predictions <- predict(mod_1, newdata = test_set)
+(rmse <- sqrt(mean((test_set$SalePrice - test_predictions)^2)))
+
+```
+##Exercise 7
+
+```{r}
+
+sim1a <- tibble(
+x = rep(1:10, each = 3),
+y = x * 1.5 + 6 + rt(length(x), df = 2)
+)
+
+mod_2 <- lm(sim1a$y ~ sim1a$x, data = train_set)
+
+tidy(mod_2)
+glance(mod_2)
+
+plot(sim1a$y ~ sim1a$x, data = train_set)
+abline(mod_2)
+
+#another run
+sim1b <- tibble(
+x = rep(1:10, each = 3),
+y = x * 1.5 + 6 + rt(length(x), df = 2)
+)
+
+mod_3 <- lm(sim1b$y ~ sim1b$x, data = train_set)
+
+
+plot(sim1b$y ~ sim1b$x, data = train_set)
+abline(mod_3)
+
+#another run
+sim1c <- tibble(
+x = rep(1:10, each = 3),
+y = x * 1.5 + 6 + rt(length(x), df = 2)
+)
+
+mod_4 <- lm(sim1c$y ~ sim1c$x, data = train_set)
+
+
+plot(sim1c$y ~ sim1c$x, data = train_set)
+abline(mod_4)
+
+```
+<p></p><i>What do you notice about the model?</i><p></p>
+
+<p>The slope of the line changes significantly when applied to different data sets. Depending on where the outliers are in the data, it has a subtantial impact on how the linear regression is fitted to the data.  </p>
