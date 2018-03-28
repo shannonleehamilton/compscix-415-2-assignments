@@ -1,0 +1,163 @@
+---
+title: "Homework 8"
+author: "Shannon Hamilton"
+date: "3/25/2018"
+output: 
+  html_document: 
+    toc: yes
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_packages, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(broom)
+```
+
+##Exercise 1
+
+<i>Load the train.csv dataset into R. How many observations and columns are there? Convert the target variable
+to a factor because it will be loaded into R as an integer by default.</i><p></p>
+
+<p>There are 891 observatons and 12 variables/columns. </p>
+
+
+```{r}
+file_path <- '/Users/shamilto/Downloads/train-1.csv'
+train <-read_csv(file_path,col_names=TRUE)
+train <- as.tibble(train)
+train$Survived <- as.factor(train$Survived)
+glimpse(train)
+
+```
+
+##Exercise 2
+
+<p><i>Our first step is to randomly split the data into train and test datasets. We will use a 70/30 split, and use
+the random seed of 29283 so that we all should get the same training and test set.</p></i>
+
+
+```{r}
+set.seed(29283)
+
+train_set <- train %>% sample_frac(0.7)
+
+test_set <- train %>% filter(!(PassengerId %in% train_set$PassengerId))
+glimpse(test_set)
+```
+
+##Exercise 3
+
+<p><i>Our target is called Survived. First, fit a logistic regression model using Pclass, Sex, Fare as your three
+features. Fit the model using the glm() function.</p></i>
+
+```{r}
+
+# Fit a model with intercept only
+mod_1 <- glm(Survived ~ (Pclass+Sex+Fare), data = train_set, family = 'binomial')
+
+
+# take a look at the features and coefficients
+tidy(mod_1)
+
+```
+
+<i><p>After fitting the model, output the coefficients using the broom package and answer these questions:</p></i>
+
+<p> <i>How would you interpret the coefficients?</i></p>
+<p>For every additional ticket class increase (i.e. a lower class, since first class is the "best"), the odds of someone survivng decrease by 0.87.</p>
+<p>If a passenger is male, the odds of them survivng decrease by 2.84.</p>
+
+<p> <i>Are the features significant?</i></p>
+All are statistically significant, looking at the p-value.
+
+##Exercise 4
+
+
+```{r}
+
+
+library(rpart)
+library(partykit)
+tree_mod <- rpart(Survived ~ (Pclass+Sex+Fare), data = train_set)
+plot(as.party(tree_mod))
+
+```
+
+<p>Describe in words one path a Titanic passenger might take down the tree. (Hint: look at your tree,
+choose a path from the top to a terminal node, and describe the path like this - a male passenger who
+paid a fare > 30 and was in first class has a high probability of survival) </p>
+
+<p> Females with in a class less than 2.5 have a high probability of survival. </p>
+
+<p>Does anything surprise you about the fitted tree?</p>
+
+<p> It surprises me that fare only "matters" for females with a class greater or equal to 2.5. </p>
+
+
+##Exercise 5
+
+
+
+```{r}
+
+
+test_logit <- predict(mod_1, newdata = test_set, type = 'response')
+test_tree <- predict(tree_mod, newdata = test_set)[,2]
+
+
+library(ROCR)
+# create the prediction objects for both models
+pred_logit <- prediction(predictions = test_logit, labels = test_set$Survived)
+pred_tree <- prediction(predictions = test_tree, labels = test_set$Survived)
+# get the FPR and TPR for the logistic model
+# recall that the ROC curve plots the FPR on the x-axis
+perf_logit <- performance(pred_logit, measure = 'tpr', x.measure = 'fpr')
+perf_logit_tbl <- tibble(perf_logit@x.values[[1]], perf_logit@y.values[[1]])
+# Change the names of the columns of the tibble
+names(perf_logit_tbl) <- c('fpr', 'tpr')
+# get the FPR and TPR for the tree model
+perf_tree <- performance(pred_tree, measure = 'tpr', x.measure = 'fpr')
+perf_tree_tbl <- tibble(perf_tree@x.values[[1]], perf_tree@y.values[[1]])
+# Change the names of the columns of the tibble
+names(perf_tree_tbl) <- c('fpr', 'tpr')
+# Plotting function for plotting a nice ROC curve using ggplot
+plot_roc <- function(perf_tbl) {
+p <- ggplot(data = perf_tbl, aes(x = fpr, y = tpr)) +
+geom_line(color = 'blue') +
+geom_abline(intercept = 0, slope = 1, lty = 3) +
+labs(x = 'False positive rate', y = 'True positive rate') +
+theme_bw()
+return(p)
+}
+# Create the ROC curves using the function we created above
+plot_roc(perf_logit_tbl)
+plot_roc(perf_tree_tbl)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
