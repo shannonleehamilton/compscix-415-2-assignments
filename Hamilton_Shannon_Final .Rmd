@@ -20,6 +20,7 @@ library(tidyverse)
 library(rpart)
 library(partykit)
 library(randomForest)
+library(ROCR)
 ```
 
 ##Bootstrapping
@@ -150,13 +151,63 @@ plot(as.party(tree_mod))
 
 ###Question 3
 
+```{r}
 
+rf_mod <- randomForest(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked,
+data = train_set,
+ntrees = 500,
+mtry = 4,
+na.action = na.roughfix)
 
+```
 
 ###Question 4
 
+```{r}
+
+library(randomForest)
+library(ROCR)
+
+rf_preds <- predict(rf_mod, newdata = test_set, type = 'prob')[,2]
+tree_preds <- predict(tree_mod, newdata = test_set)[,2]
+pred_rf <- prediction(predictions = rf_preds, labels = test_set$Survived)
+pred_tree <- prediction(predictions = tree_preds, labels = test_set$Survived)
+
+
+perf_tree <- performance(pred_tree, measure = 'tpr', x.measure = 'fpr')
+perf_tree_tbl <- tibble(perf_tree@x.values[[1]], perf_tree@y.values[[1]])
+names(perf_tree_tbl) <- c('fpr', 'tpr')
+
+perf_rf <- performance(pred_rf, measure = 'tpr', x.measure = 'fpr')
+perf_rf_tbl <- tibble(perf_rf@x.values[[1]], perf_rf@y.values[[1]])
+names(perf_rf_tbl) <- c('fpr', 'tpr')
+
+glimpse(perf_tree_tbl)
+
+glimpse(perf_rf_tbl)
+```
+
+<p> The random Forest appears to perform better, also clearly seen in our ROC charts below. </p>
 
 ###Question 5
+
+```{r}
+
+
+plot_roc <- function(perf_tbl) {
+p <- ggplot(data = perf_tbl, aes(x = fpr, y = tpr)) +
+geom_line(color = 'blue') +
+geom_abline(intercept = 0, slope = 1, lty = 3) +
+labs(x = 'False positive rate', y = 'True positive rate') +
+theme_bw()
+return(p)
+}
+
+plot_roc(perf_rf_tbl)
+
+plot_roc(perf_tree_tbl)
+```
+
 
 
 ###Question 6
