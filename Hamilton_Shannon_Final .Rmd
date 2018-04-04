@@ -1,0 +1,16 @@
+---
+title: "COMPSCIX 415.2 Homework 9/Final"
+author: "Shannon Hamilton"
+date: "4/3/2018"
+output: 
+  html_document: 
+    toc: yes
+    self_contained: true
+---
+
+
+
+```{r}
+plot(cars)
+```
+
