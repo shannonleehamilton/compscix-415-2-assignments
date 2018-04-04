@@ -8,9 +8,57 @@ output:
     self_contained: true
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
+```{r load_packages, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(broom)
+library(modelr)
+library(tidyverse)
+library(rpart)
+library(partykit)
+library(randomForest)
+```
+
+##Bootstrapping
+
+###Question 1
 
 ```{r}
-plot(cars)
+file_path <- '/Users/shamilto/Downloads/train-f.csv'
+train <-read_csv(file_path,col_names=TRUE)
+train <- as.tibble(train)
+train$Survived <- as.factor(train$Survived)
+train$Name <- as.factor(train$Name)
+train$Sex <- as.factor(train$Sex)
+train$Ticket <- as.factor(train$Ticket)
+train$Cabin <- as.factor(train$Cabin)
+train$Embarked <- as.factor(train$Embarked)
+glimpse(train)
+
 ```
+
+###Question 2
+
+```{r}
+titanic_boot <- bootstrap(data = train, n = 100)
+glimpse(titanic_boot)
+```
+
+<p> Confirmed the above created a tibble by using "glimpse". </p>
+
+###Question 3
+
+```{r}
+# since the strap column of titanic_boot is a list, we can
+# extract the resampled data using the double brackets [[]],
+# and just pick out a few of them to compare the number of
+# distinct rows
+as.tibble(titanic_boot$strap[[1]]) %>% n_distinct()
+as.tibble(titanic_boot$strap[[2]]) %>% n_distinct()
+as.tibble(titanic_boot$strap[[3]]) %>% n_distinct()
+```
+
 
