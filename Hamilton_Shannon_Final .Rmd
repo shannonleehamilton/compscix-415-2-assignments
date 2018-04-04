@@ -59,6 +59,88 @@ glimpse(titanic_boot)
 as.tibble(titanic_boot$strap[[1]]) %>% n_distinct()
 as.tibble(titanic_boot$strap[[2]]) %>% n_distinct()
 as.tibble(titanic_boot$strap[[3]]) %>% n_distinct()
+
 ```
+
+We see there are different number of distinct values accross the different bootstrap samples because of the repacement.
+
+###Question 4
+
+```{r}
+age_mean <- function(mean) {
+data <- as.tibble(train) # convert input data set to a tibble
+mean_age <- mean(train$Age, na.rm = TRUE) # take the mean of Age, remove NAs
+return(mean_age) # return the mean value of Age from data
+}
+# loop through the 100 bootstrap samples and use the age_mean()
+# function
+all_means <- rep(NA, 100)
+
+# start the loop
+for(i in 1:100) {
+all_means[i] <- age_mean(titanic_boot$strap[[i]])
+}
+# take a look at some of the means you calculated from your samples
+head(all_means)
+
+# convert to a tibble so we can use if for plotting
+all_means <- tibble(all_means = all_means)
+
+```
+
+<p> We see a similar mean across our bootstrapped samples, which shows the CLM is holding.
+
+###Question 5
+
+```{r}
+
+glimpse(all_means)
+           
+ggplot(data=all_means, aes(all_means))+
+geom_histogram(binwidth = 0.02)
+
+```
+
+###Question 6
+
+<insert see notes from class 9.1>
+
+
+##Random Forest
+
+###Question 1
+
+```{r}
+
+set.seed(987)
+model_data <- resample_partition(train, c(test = 0.3, train = 0.7))
+
+train_set <- as.tibble(model_data$train)
+test_set <- as.tibble(model_data$test)
+
+```
+
+###Question 2
+
+
+
+###Question 3
+
+
+###Question 4
+
+
+###Question 5
+
+
+###Question 6
+
+
+
+
+
+
+
+
 
 
