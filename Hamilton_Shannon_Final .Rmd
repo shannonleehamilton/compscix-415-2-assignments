@@ -139,9 +139,18 @@ test_set <- as.tibble(model_data$test)
 
 ###Question 2
 
+```{r}
 
+tree_mod <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data = train_set)
+plot(as.party(tree_mod))
+
+```
+
+<p> Even though we are including more features, sex is still the #1 split. Age is an important feature for men especially, which we didn't include in our tree last class. </p>
 
 ###Question 3
+
+
 
 
 ###Question 4
