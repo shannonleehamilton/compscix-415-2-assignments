@@ -67,9 +67,9 @@ We see there are different number of distinct values accross the different boots
 ###Question 4
 
 ```{r}
-age_mean <- function(mean) {
-data <- as.tibble(train) # convert input data set to a tibble
-mean_age <- mean(train$Age, na.rm = TRUE) # take the mean of Age, remove NAs
+age_mean <- function(data) {
+data <- as.tibble(data) # convert input data set to a tibble
+mean_age <- mean(data$Age, na.rm = TRUE) # take the mean of Age, remove NAs
 return(mean_age) # return the mean value of Age from data
 }
 # loop through the 100 bootstrap samples and use the age_mean()
@@ -88,7 +88,7 @@ all_means <- tibble(all_means = all_means)
 
 ```
 
-<p> We see a similar mean across our bootstrapped samples, which shows the CLM is holding.
+<p> We should see a normal distribution of these means when we graph them. </p>
 
 ###Question 5
 
@@ -100,11 +100,28 @@ ggplot(data=all_means, aes(all_means))+
 geom_histogram(binwidth = 0.02)
 
 ```
+<p> We see an approximately normal distribution of the means as expected. If we used a larger number of repititions, this graph would continue to approach normal. </p>
+
 
 ###Question 6
 
-<insert see notes from class 9.1>
 
+```{r}
+#theoretical SE
+
+(SE <- (sd(train$Age, na.rm = TRUE))/(sqrt(891)))
+
+```
+
+
+```{r}
+#Bootstrapped
+
+(SE <- (sd(all_means$all_means, na.rm = TRUE))/(sqrt(100)))
+
+```
+
+<p>The standard error of the sample means is much lower. </p>
 
 ##Random Forest
 
