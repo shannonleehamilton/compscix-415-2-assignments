@@ -98,7 +98,7 @@ all_means <- tibble(all_means = all_means)
 glimpse(all_means)
            
 ggplot(data=all_means, aes(all_means))+
-geom_histogram(binwidth = 0.02)
+geom_histogram(binwidth = 0.1)
 
 ```
 <p> We see an approximately normal distribution of the means as expected. If we used a larger number of repititions, this graph would continue to approach normal. </p>
@@ -195,30 +195,31 @@ perf_rf_auc@y.values
 
 ###Question 5
 
+
 ```{r}
+#(new_tbbl <- dplyr::bind_rows(perf_rf_tbl, perf_tree_tbl))
+new_tbbl <- bind_rows(list(perf_rf_tbl, perf_tree_tbl), .id = "id")
+
+new_tbbl$id[new_tbbl$id==1] <- "RF"
+new_tbbl$id[new_tbbl$id==2] <- "Tree"
+
 plot_roc <- function(perf_tbl) {
-p <- ggplot(data = perf_tbl, aes(x = fpr, y = tpr)) +
-geom_line(color = 'blue') +
+p <- ggplot(data = perf_tbl, aes(x = fpr, y = tpr, color = id)) +
+geom_line() +
 geom_abline(intercept = 0, slope = 1, lty = 3) +
 labs(x = 'False positive rate', y = 'True positive rate') +
 theme_bw()
 return(p)
 }
 
-plot_roc(perf_rf_tbl)
+plot_roc(new_tbbl)
 
-plot_roc(perf_tree_tbl)
 ```
 
 
 ###Question 6
 
-
-which model performs better: decision tree or random forest?
-• what is the approximate false positive rate, for both the decision tree and the random forest, if we
-attain a true positive rate of approximately 0.75? Answers do not need to be exact - just ballpark it by
-looking at the plots.
-
+<p> According to the plots, RF performs better, as it is more bowed out.  At a tpr of 0.75 the RF has an fpr of ~ 0.2 and the single tree has an fpr of ~0.3.
 
 
 
