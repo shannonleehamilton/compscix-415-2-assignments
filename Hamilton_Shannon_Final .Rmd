@@ -182,18 +182,20 @@ perf_rf <- performance(pred_rf, measure = 'tpr', x.measure = 'fpr')
 perf_rf_tbl <- tibble(perf_rf@x.values[[1]], perf_rf@y.values[[1]])
 names(perf_rf_tbl) <- c('fpr', 'tpr')
 
-glimpse(perf_tree_tbl)
+perf_tree_auc <- performance(pred_tree, measure = 'auc')
+perf_tree_auc@y.values
 
-glimpse(perf_rf_tbl)
+perf_rf_auc <- performance(pred_rf, measure = 'auc')
+perf_rf_auc@y.values
+
 ```
 
-<p> The random Forest appears to perform better, also clearly seen in our ROC charts below. </p>
+
+<p> Random Forest has a higher AUC than the single decision tree. </p>
 
 ###Question 5
 
 ```{r}
-
-
 plot_roc <- function(perf_tbl) {
 p <- ggplot(data = perf_tbl, aes(x = fpr, y = tpr)) +
 geom_line(color = 'blue') +
@@ -209,11 +211,13 @@ plot_roc(perf_tree_tbl)
 ```
 
 
-
 ###Question 6
 
 
-
+which model performs better: decision tree or random forest?
+• what is the approximate false positive rate, for both the decision tree and the random forest, if we
+attain a true positive rate of approximately 0.75? Answers do not need to be exact - just ballpark it by
+looking at the plots.
 
 
 
